@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Streamers Donation Hub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Outfit', sans-serif; }
+        body { 
+            background: #08070d; 
+            color: #fff; 
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column;
+            align-items: center; 
+            padding: 40px 16px; 
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated Ambient Glowing Orbs Background */
+        .bg-glow-orb-1 {
+            position: fixed;
+            top: -10%;
+            left: -10%;
+            width: 60vw;
+            height: 60vw;
+            background: radial-gradient(circle, rgba(255, 0, 85, 0.28) 0%, rgba(255, 0, 85, 0) 70%);
+            border-radius: 50%;
+            filter: blur(60px);
+            z-index: -2;
+            animation: orbFloat1 12s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+
+        .bg-glow-orb-2 {
+            position: fixed;
+            bottom: -10%;
+            right: -10%;
+            width: 65vw;
+            height: 65vw;
+            background: radial-gradient(circle, rgba(138, 43, 226, 0.3) 0%, rgba(138, 43, 226, 0) 70%);
+            border-radius: 50%;
+            filter: blur(65px);
+            z-index: -2;
+            animation: orbFloat2 15s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+
+        .bg-glow-orb-3 {
+            position: fixed;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 45vw;
+            height: 45vw;
+            background: radial-gradient(circle, rgba(255, 85, 0, 0.15) 0%, rgba(255, 85, 0, 0) 70%);
+            border-radius: 50%;
+            filter: blur(70px);
+            z-index: -2;
+            animation: orbPulse 8s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+
+        @keyframes orbFloat1 {
+            0% { transform: translate(0, 0) scale(1); opacity: 0.8; }
+            50% { transform: translate(12%, 15%) scale(1.15); opacity: 1; }
+            100% { transform: translate(5%, 25%) scale(0.95); opacity: 0.7; }
+        }
+
+        @keyframes orbFloat2 {
+            0% { transform: translate(0, 0) scale(1); opacity: 0.7; }
+            50% { transform: translate(-15%, -10%) scale(1.2); opacity: 1; }
+            100% { transform: translate(-8%, -20%) scale(0.9); opacity: 0.65; }
+        }
+
+        @keyframes orbPulse {
+            0% { transform: translate(-50%, -50%) scale(0.85); opacity: 0.4; }
+            100% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.8; }
+        }
+
+        .hub-header { text-align: center; max-width: 600px; margin-bottom: 32px; }
+        .hub-title { font-size: 34px; font-weight: 900; background: linear-gradient(135deg, #ff0055, #ff5500, #9b51e0); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hub-subtitle { font-size: 15px; color: rgba(255,255,255,0.75); margin-top: 8px; }
+
+        .back-btn { display: inline-flex; align-items: center; gap: 8px; color: #ff2a6d; text-decoration: none; font-weight: 700; font-size: 14px; margin-bottom: 20px; cursor: pointer; transition: opacity 0.2s; }
+        .back-btn:hover { opacity: 0.8; color: #ff0055; }
+
+        /* Streamer Selection Grid */
+        .streamers-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; width: 100%; max-width: 640px; margin-bottom: 24px; }
+        .streamer-card { background: rgba(20, 15, 28, 0.85); border: 2px solid rgba(255, 0, 85, 0.2); border-radius: 24px; padding: 26px; text-align: center; cursor: pointer; transition: all 0.25s ease; box-shadow: 0 12px 35px rgba(0,0,0,0.6); backdrop-filter: blur(12px); position: relative; overflow: hidden; }
+        .streamer-card:hover { border-color: #ff0055; transform: translateY(-5px); box-shadow: 0 18px 40px rgba(255, 0, 85, 0.35); }
+
+        .coming-soon-card { position: relative; cursor: not-allowed; }
+        .coming-soon-badge { position: absolute; top: 12px; right: 12px; background: linear-gradient(135deg, #ffc107, #ff9800); color: #000; font-size: 10px; font-weight: 900; padding: 4px 8px; border-radius: 8px; text-transform: uppercase; letter-spacing: 0.5px; z-index: 2; }
+        .blur-overlay { filter: grayscale(50%); opacity: 0.75; }
+
+        .avatar-wrap { width: 96px; height: 96px; border-radius: 50%; margin: 0 auto 14px; overflow: hidden; border: 3px solid #ff0055; box-shadow: 0 8px 24px rgba(255, 0, 85, 0.45); background: #120c1a; }
+        .avatar-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        
+        .streamer-name { font-size: 22px; font-weight: 800; }
+        .streamer-game { font-size: 13px; color: #ff2a6d; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+        .btn-select-streamer { margin-top: 14px; background: linear-gradient(135deg, #ff0055, #ff5500); color: #fff; border: none; padding: 10px 20px; border-radius: 12px; font-size: 13px; font-weight: 800; width: 100%; cursor: pointer; transition: opacity 0.2s; }
+        .btn-select-streamer:hover { opacity: 0.9; }
+
+        /* Main Dedicated Donation Card */
+        .donate-card { background: rgba(15, 13, 24, 0.95); border: 1px solid rgba(255, 0, 85, 0.25); border-radius: 24px; width: 100%; max-width: 520px; padding: 28px; box-shadow: 0 25px 60px rgba(0,0,0,0.8), 0 0 35px rgba(255, 0, 85, 0.15); backdrop-filter: blur(16px); display: block; }
+        .donate-card.show { display: block; animation: slideUp 0.3s ease; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .card-header { text-align: center; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid rgba(255, 0, 85, 0.15); }
+        .header-avatar { width: 92px; height: 92px; border-radius: 50%; margin: 0 auto 12px; overflow: hidden; border: 3px solid #ff0055; box-shadow: 0 0 25px rgba(255, 0, 85, 0.6); background: #120c1a; animation: avatarSharinganGlow 4s ease-in-out infinite alternate; }
+        .header-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+        @keyframes avatarSharinganGlow {
+            0% { border-color: #ff0055; box-shadow: 0 0 20px rgba(255, 0, 85, 0.5); }
+            50% { border-color: #ff5500; box-shadow: 0 0 35px rgba(255, 85, 0, 0.8), 0 0 15px rgba(255, 0, 85, 0.6); }
+            100% { border-color: #ff0055; box-shadow: 0 0 25px rgba(255, 0, 85, 0.6); }
+        }
+        .card-header h2 { font-size: 26px; font-weight: 900; background: linear-gradient(135deg, #ffffff, #ff77a8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .card-header p { font-size: 13px; color: rgba(255,255,255,0.75); margin-top: 4px; }
+
+        .form-group { margin-bottom: 18px; }
+        label { display: block; font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.85); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+        input, select, textarea { width: 100%; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 0, 85, 0.2); border-radius: 12px; padding: 12px 14px; color: #fff; font-size: 15px; outline: none; transition: border-color 0.2s, background 0.2s, box-shadow 0.2s; }
+        input:focus, select:focus, textarea:focus { border-color: #ff0055; background: rgba(255, 0, 85, 0.08); box-shadow: 0 0 18px rgba(255, 0, 85, 0.35); }
+        textarea { resize: vertical; min-height: 80px; }
+
+        .field-hint { font-size: 11px; color: #ff2a6d; margin-top: 4px; font-weight: 600; }
+        .error-msg { background: rgba(255, 23, 68, 0.15); border: 1px solid #ff1744; color: #ff5252; padding: 10px 14px; border-radius: 10px; font-size: 13px; font-weight: 600; margin-bottom: 16px; display: none; }
+
+        /* Gateway Selector */
+        .gateway-selector { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 16px; }
+        .gw-option { position: relative; background: rgba(255,255,255,0.04); border: 2px solid rgba(255, 0, 85, 0.15); border-radius: 14px; padding: 14px; text-align: center; cursor: pointer; transition: all 0.2s; user-select: none; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 85px; }
+        .gw-option.selected { border-color: #ff0055; background: rgba(255, 0, 85, 0.18); box-shadow: 0 0 22px rgba(255, 0, 85, 0.4); }
+        .gw-option.coming-soon-gw { opacity: 0.55; filter: grayscale(40%); }
+        .gw-option.coming-soon-gw:hover { opacity: 0.85; filter: grayscale(0%); border-color: rgba(255, 193, 7, 0.6); }
+        .gw-cs-badge { position: absolute; top: 4px; right: 4px; background: linear-gradient(135deg, #ffc107, #ff9800); color: #000; font-size: 8px; font-weight: 900; padding: 2px 5px; border-radius: 6px; text-transform: uppercase; letter-spacing: 0.3px; }
+        .gw-option img { height: 34px; max-width: 130px; object-fit: contain; margin-bottom: 6px; }
+        .gw-name { font-size: 13px; font-weight: 800; }
+
+        /* Amount Presets */
+        .amount-presets { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-bottom: 10px; }
+        .preset-btn { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,0,85,0.2); color: #fff; border-radius: 10px; padding: 8px 4px; font-size: 12px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+        .preset-btn:hover { background: rgba(255, 0, 85, 0.25); border-color: #ff0055; box-shadow: 0 0 10px rgba(255, 0, 85, 0.3); }
+
+        /* Floating Cyber Bubbles */
+        .bubble-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bubble {
+            position: absolute;
+            bottom: -60px;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 0, 85, 0.85), rgba(138, 43, 226, 0.45));
+            border-radius: 50%;
+            box-shadow: 0 0 18px rgba(255, 0, 85, 0.7), inset 0 0 8px rgba(255, 255, 255, 0.6);
+            animation: riseBubble 10s linear infinite;
+        }
+
+        .bubble:nth-child(1) { left: 8%; width: 22px; height: 22px; animation-duration: 8s; animation-delay: 0s; }
+        .bubble:nth-child(2) { left: 22%; width: 14px; height: 14px; animation-duration: 11s; animation-delay: 2s; background: radial-gradient(circle, rgba(255, 85, 0, 0.85), rgba(255, 0, 85, 0.45)); }
+        .bubble:nth-child(3) { left: 35%; width: 28px; height: 28px; animation-duration: 13s; animation-delay: 1s; }
+        .bubble:nth-child(4) { left: 50%; width: 18px; height: 18px; animation-duration: 7.5s; animation-delay: 3s; }
+        .bubble:nth-child(5) { left: 65%; width: 26px; height: 26px; animation-duration: 10s; animation-delay: 0.5s; background: radial-gradient(circle, rgba(138, 43, 226, 0.85), rgba(255, 0, 85, 0.45)); }
+        .bubble:nth-child(6) { left: 78%; width: 16px; height: 16px; animation-duration: 12s; animation-delay: 4s; }
+        .bubble:nth-child(7) { left: 88%; width: 24px; height: 24px; animation-duration: 9.5s; animation-delay: 1.5s; }
+        .bubble:nth-child(8) { left: 95%; width: 12px; height: 12px; animation-duration: 14s; animation-delay: 2.5s; }
+
+        @keyframes riseBubble {
+            0% { transform: translateY(0) scale(0.6) rotate(0deg); opacity: 0; }
+            15% { opacity: 0.85; }
+            85% { opacity: 0.85; }
+            100% { transform: translateY(-110vh) scale(1.3) rotate(360deg); opacity: 0; }
+        }
+
+        .btn-submit { 
+            position: relative;
+            width: 100%; 
+            background: linear-gradient(135deg, #ff0055, #ff5500, #8a2be2, #ff0055); 
+            background-size: 300% 300%;
+            color: #fff; 
+            border: none; 
+            border-radius: 14px; 
+            padding: 18px; 
+            font-size: 18px; 
+            font-weight: 900; 
+            cursor: pointer; 
+            overflow: hidden;
+            transition: all 0.2s ease;
+            box-shadow: 0 8px 30px rgba(255, 0, 85, 0.6), 0 0 15px rgba(255, 85, 0, 0.4); 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            animation: gradientShift 4s ease infinite, btnPulse 2s ease-in-out infinite;
+        }
+
+        .btn-submit::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 50%;
+            height: 200%;
+            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0) 100%);
+            transform: rotate(25deg);
+            animation: btnShine 3s infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes btnPulse {
+            0% { transform: scale(1); box-shadow: 0 8px 30px rgba(255, 0, 85, 0.6), 0 0 15px rgba(255, 85, 0, 0.4); }
+            50% { transform: scale(1.02); box-shadow: 0 12px 40px rgba(255, 0, 85, 0.85), 0 0 25px rgba(255, 85, 0, 0.7); }
+            100% { transform: scale(1); box-shadow: 0 8px 30px rgba(255, 0, 85, 0.6), 0 0 15px rgba(255, 85, 0, 0.4); }
+        }
+
+        @keyframes btnShine {
+            0% { left: -60%; }
+            30% { left: 140%; }
+            100% { left: 140%; }
+        }
+
+        .btn-submit:hover { opacity: 0.98; }
+        .btn-submit:active { transform: scale(0.97); }
+
+        /* Step 2 Payment Screen */
+        .step2 { display: none; text-align: center; }
+        .ref-box { background: rgba(255, 193, 7, 0.12); border: 1px dashed #ffc107; border-radius: 14px; padding: 16px; margin: 18px 0; }
+        .ref-code { font-size: 32px; font-weight: 900; letter-spacing: 5px; color: #ffc107; text-shadow: 0 0 15px rgba(255,193,7,0.4); }
+        .bank-details { background: rgba(255,255,255,0.05); border-radius: 14px; padding: 18px; margin-bottom: 18px; text-align: left; border: 1px solid rgba(255,0,85,0.2); }
+        .acc-row { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; font-size: 15px; font-weight: 700; }
+        .acc-val { color: #00e676; font-weight: 800; font-size: 16px; }
+        .btn-copy { background: rgba(255,255,255,0.15); border: none; color: #fff; padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; transition: background 0.2s; }
+        .btn-copy:hover { background: #ff0055; color: #fff; }
+        .app-link-btn { display: block; width: 100%; background: #00e676; color: #000; text-decoration: none; font-weight: 900; padding: 16px; border-radius: 14px; margin-top: 14px; box-shadow: 0 8px 24px rgba(0,230,118,0.3); font-size: 16px; text-transform: uppercase; letter-spacing: 0.5px; border: none; cursor: pointer; }
+
+        .status-pill { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.08); padding: 10px 20px; border-radius: 20px; font-size: 13px; margin-top: 18px; border: 1px solid rgba(255,255,255,0.15); }
+        .status-dot { width: 10px; height: 10px; background: #ffc107; border-radius: 50%; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { opacity: 0.3; } 50% { opacity: 1; } 100% { opacity: 0.3; } }
+    </style>
+</head>
+<body>
+    <div class="bg-glow-orb-1"></div>
+    <div class="bg-glow-orb-2"></div>
+    <div class="bg-glow-orb-3"></div>
+
+    <div class="bubble-container">
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+    </div>
+
+    <!-- Dedicated NATE PUBGM Streamer Donation Card -->
+    <div class="donate-card show" id="donate-card-box" style="display: block;">
+        <div class="card-header">
+            <div class="header-avatar"><img id="target-streamer-avatar" src="/img/nate.png" alt="NATE PUBGM"></div>
+            <h2>Support <span id="target-streamer-label" style="color: #00c6ff;">NATE PUBGM</span></h2>
+            <p>Your name & custom note will pop up live on stream!</p>
+        </div>
+
+        <div class="error-msg" id="error-banner"></div>
+
+        <!-- Unified Single Donation Form -->
+        <form id="donation-form">
+            <div class="form-group">
+                <label><i class="fa-solid fa-user"></i> Stream Overlay Nickname (Max 15 Letters)</label>
+                <input type="text" id="donor-name" maxlength="15" placeholder="Write your nickname (max 15 letters)..." value="" required>
+                <div class="field-hint" style="color: #00c6ff; display: flex; justify-content: space-between;">
+                    <span>English or Amharic letters only (no emojis)</span>
+                    <span id="name-word-badge" style="font-weight: 800; color: #00e676;">0 / 15 letters</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label id="realname-label"><i class="fa-solid fa-id-card"></i> Telebirr Account Full Name</label>
+                <input type="text" id="donor-realname" placeholder="Write your real full name here in English..." value="" required>
+                <div class="field-hint" id="realname-hint">Must match your Telebirr account full name for instant verification!</div>
+            </div>
+
+            <div class="form-group">
+                <label><i class="fa-solid fa-wallet"></i> Select Payment Gateway</label>
+                <div class="gateway-selector">
+                    <div class="gw-option selected" id="gw-telebirr">
+                        <img src="/img/telebirr.png" alt="Telebirr">
+                        <div class="gw-name">Telebirr</div>
+                    </div>
+                    <div class="gw-option" id="gw-fastpay">
+                        <img src="/img/fastpay.png" alt="FastPay">
+                        <div class="gw-name">FastPay</div>
+                    </div>
+                    <div class="gw-option coming-soon-gw" id="gw-cbe">
+                        <span class="gw-cs-badge">Coming Soon</span>
+                        <img src="/img/cbe1.png" alt="CBE Bank">
+                        <div class="gw-name">CBE Bank</div>
+                    </div>
+                    <div class="gw-option coming-soon-gw" id="gw-dashen">
+                        <span class="gw-cs-badge">Coming Soon</span>
+                        <img src="/img/dashen.png" alt="Dashen Bank">
+                        <div class="gw-name">Dashen Bank</div>
+                    </div>
+                    <div class="gw-option coming-soon-gw" id="gw-awash">
+                        <span class="gw-cs-badge">Coming Soon</span>
+                        <img src="/img/awash.png" alt="Awash Bank">
+                        <div class="gw-name">Awash Bank</div>
+                    </div>
+                    <div class="gw-option coming-soon-gw" id="gw-abyssinia">
+                        <span class="gw-cs-badge">Coming Soon</span>
+                        <img src="/img/abisinia.png" alt="Abyssinia Bank">
+                        <div class="gw-name">Abyssinia Bank</div>
+                    </div>
+                    <div class="gw-option coming-soon-gw" id="gw-mpesa">
+                        <span class="gw-cs-badge">Coming Soon</span>
+                        <img src="/img/mpesa.png" alt="M-Pesa">
+                        <div class="gw-name">M-Pesa</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MODE 1: Normal Custom Donation Amount -->
+            <div id="normal-amount-section" class="form-group">
+                <label><i class="fa-solid fa-coins"></i> Donation Amount (ETB)</label>
+                <div class="preset-chips" style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px;">
+                    <button type="button" class="preset-btn" onclick="setDonationAmount(5)">5 ETB</button>
+                    <button type="button" class="preset-btn" onclick="setDonationAmount(25)">25 ETB</button>
+                    <button type="button" class="preset-btn" onclick="setDonationAmount(50)">50 ETB</button>
+                    <button type="button" class="preset-btn" onclick="setDonationAmount(100)" style="background: linear-gradient(135deg, #ff007f, #7928ca); border-color: #ff007f; color: #fff; font-weight: bold;">100 ETB 🌟 GIF</button>
+                    <button type="button" class="preset-btn" onclick="setDonationAmount(500)">500 ETB</button>
+                    <button type="button" class="preset-btn" onclick="setDonationAmount(1000)">1000 ETB</button>
+                </div>
+                <input type="number" id="donor-amount" min="1" value="25" required>
+                <div class="field-hint" id="amount-tier-hint" style="color: #00c6ff; margin-top: 6px; font-weight: 600;">Select or enter any custom amount you wish to donate!</div>
+            </div>
+
+            <div class="form-group">
+                <label><i class="fa-solid fa-comment-dots"></i> Note (Max 80 Letters)</label>
+                <textarea id="donor-note" maxlength="80" placeholder="Write your note here (max 80 letters, English or Amharic)..."></textarea>
+                <div class="field-hint" id="note-hint" style="color: #00c6ff; display: flex; justify-content: space-between;">
+                    <span>English or Amharic letters only (no emojis)</span>
+                    <span id="note-word-badge" style="font-weight: 800; color: #00e676;">0 / 80 letters</span>
+                </div>
+            </div>
+
+            <button type="submit" id="btn-submit-main" class="btn-submit">🚀 Donate</button>
+        </form>
+
+        <!-- Step 2: Payment Details Screen -->
+        <div class="step2" id="payment-step2">
+            <div style="font-size: 40px; margin-bottom: 8px;">🎉</div>
+            <h2>Thank You For Your Support!</h2>
+            <p style="font-size: 14px; color: rgba(255,255,255,0.8); margin-top: 6px;">
+                Your donation note for <strong id="step2-streamer-name" style="color: #00c6ff;">NATE PUBGM</strong> has been queued!
+            </p>
+
+            <div class="bank-details" style="margin-top: 18px;">
+                <div style="font-size: 13px; color: rgba(255,255,255,0.7); font-weight: 600; margin-bottom: 8px;">
+                    Please send <span id="step2-amount" style="color: #ffc107; font-weight: 800; font-size: 16px;">500 ETB</span> to:
+                </div>
+                <div class="acc-row">
+                    <span>Account Name:</span>
+                    <span class="acc-val" id="receiver-holder">Hana</span>
+                </div>
+                <div class="acc-row" style="margin-top: 12px;">
+                    <span id="receiver-label">Telebirr Phone:</span>
+                    <span class="acc-val" id="receiver-number" style="font-size: 18px; letter-spacing: 0.5px;">0942404335</span>
+                    <button type="button" class="btn-copy" onclick="copyReceiverNumber()" style="padding: 8px 16px; font-size: 13px; background: #00e676; color: #000; font-weight: 800;">Copy Number</button>
+                </div>
+            </div>
+
+            <div class="ref-box" style="background: rgba(0, 230, 118, 0.1); border: 1px solid rgba(0, 230, 118, 0.3); border-radius: 14px; padding: 16px; margin-top: 18px;">
+                <div style="font-size: 13px; color: #00e676; font-weight: 700; line-height: 1.5;">
+                    ⚡ Once you complete your payment via Telebirr, your alert & custom note message will automatically pop up live on stream!
+                </div>
+            </div>
+
+            <div class="status-pill" id="live-status-pill">
+                <div class="status-dot" id="status-dot"></div>
+                <span id="status-text">⏳ <strong>Awaiting Payment...</strong> We are verifying your transaction live.</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const GATEWAYS = [
+            { id: 'gw-telebirr', key: 'Telebirr', name: 'Telebirr', accProp: 'telebirrLocal', fullAccProp: 'telebirrAcc', label: 'Telebirr Phone' },
+            { id: 'gw-fastpay', key: 'FastPay', name: 'FastPay', accProp: 'fastpayLocal', fullAccProp: 'fastpayAcc', label: 'FastPay Phone' },
+            { id: 'gw-cbe', key: 'CBE', name: 'CBE Bank', accProp: 'cbeAcc', fullAccProp: 'cbeAcc', label: 'CBE Account Number' },
+            { id: 'gw-dashen', key: 'Dashen', name: 'Dashen Bank', accProp: 'dashenAcc', fullAccProp: 'dashenAcc', label: 'Dashen Account Number' },
+            { id: 'gw-awash', key: 'Awash', name: 'Awash Bank', accProp: 'awashAcc', fullAccProp: 'awashAcc', label: 'Awash Account Number' },
+            { id: 'gw-abyssinia', key: 'Abyssinia', name: 'Abyssinia Bank', accProp: 'abyssiniaAcc', fullAccProp: 'abyssiniaAcc', label: 'Abyssinia Account Number' },
+            { id: 'gw-mpesa', key: 'M-Pesa', name: 'M-Pesa', accProp: 'mpesaAcc', fullAccProp: 'mpesaAcc', label: 'M-Pesa Phone Number' }
+        ];
+
+        const STREAMERS = {
+            'hassupubgm': {
+                id: 'hassupubgm',
+                name: 'Hassu PUBGM',
+                holderName: 'Hassen',
+                game: 'PUBG Mobile Streamer',
+                avatar: '/img/hassu.png',
+                telebirrAcc: '+251954050622',
+                telebirrLocal: '0954050622',
+                cbeAcc: '1000954050622',
+                dashenAcc: '5000954050622',
+                awashAcc: '01364954050622',
+                abyssiniaAcc: '954050622',
+                mpesaAcc: '0754050622',
+                allowedGateways: ['Telebirr', 'CBE', 'Dashen', 'Awash', 'Abyssinia', 'M-Pesa'],
+                enableStickers: true
+            },
+            'rexpubgm': {
+                id: 'rexpubgm',
+                name: 'REX PUBGM',
+                holderName: 'Hassen',
+                game: 'PUBG Mobile Streamer',
+                avatar: '/img/rex.png',
+                telebirrAcc: '+251954050622',
+                telebirrLocal: '0954050622',
+                cbeAcc: '1000954050622',
+                allowedGateways: ['Telebirr', 'CBE'],
+                enableStickers: false
+            },
+            'natepubgm': {
+                id: 'natepubgm',
+                name: 'NATE PUBGM',
+                holderName: 'Hana',
+                game: 'PUBG Mobile Streamer',
+                avatar: '/img/nate.png',
+                telebirrAcc: '+251942404335',
+                telebirrLocal: '0942404335',
+                fastpayAcc: '+251942404335',
+                fastpayLocal: '0942404335',
+                allowedGateways: ['Telebirr', 'FastPay'],
+                enableStickers: false
+            }
+        };
+
+        let activeStreamer = STREAMERS['natepubgm'];
+        let selectedGw = 'Telebirr';
+        let currentRefCode = '';
+        let apiBaseUrl = '';
+        let socket = null;
+
+        const errorBanner = document.getElementById('error-banner');
+
+        async function getApiBaseUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const paramApi = urlParams.get('api');
+            if (paramApi) {
+                return paramApi.replace(/\/$/, '');
+            }
+            const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+            if (isLocal) {
+                return '';
+            }
+            try {
+                const res = await fetch('./api_config.json?_cb=' + Date.now());
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data && data.tunnelUrl) {
+                        return data.tunnelUrl.replace(/\/$/, '');
+                    }
+                }
+            } catch (e) {
+                console.warn('Could not load api_config.json:', e);
+            }
+            return '';
+        }
+
+        async function initNetwork() {
+            apiBaseUrl = await getApiBaseUrl();
+            if (typeof io !== 'undefined') {
+                socket = apiBaseUrl ? io(apiBaseUrl) : io();
+                setupSocketListeners();
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initNetwork();
+            GATEWAYS.forEach(gw => {
+                const el = document.getElementById(gw.id);
+                if (el) el.addEventListener('click', () => selectGateway(gw.key));
+            });
+
+            const path = window.location.pathname.toLowerCase();
+            const params = new URLSearchParams(window.location.search);
+            const queryStreamer = params.get('streamer') || params.get('s');
+
+            let targetId = 'natepubgm';
+            if (path.includes('/natepubgm')) {
+                targetId = 'natepubgm';
+            } else if (path.includes('/hassupubgm')) {
+                targetId = 'hassupubgm';
+            } else if (path.includes('/donate/')) {
+                targetId = path.split('/donate/')[1].replace(/\/$/, '').trim();
+            } else if (queryStreamer) {
+                targetId = queryStreamer.toLowerCase().trim();
+            }
+
+            const amtInput = document.getElementById('donor-amount');
+            if (amtInput) {
+                amtInput.addEventListener('input', () => {
+                    checkAmountTierUnlock();
+                    checkNoteLockStatus();
+                });
+                amtInput.addEventListener('change', () => {
+                    checkAmountTierUnlock();
+                    checkNoteLockStatus();
+                });
+            }
+
+            const nameInp = document.getElementById('donor-name');
+            const noteInp = document.getElementById('donor-note');
+            if (nameInp) {
+                ['input', 'keyup', 'change', 'paste'].forEach(ev => nameInp.addEventListener(ev, updateLiveCounters));
+            }
+            if (noteInp) {
+                ['input', 'keyup', 'change', 'paste'].forEach(ev => noteInp.addEventListener(ev, updateLiveCounters));
+            }
+
+            if (targetId && STREAMERS[targetId]) {
+                openDonationForm(targetId);
+            } else {
+                openDonationForm('natepubgm');
+            }
+            checkNoteLockStatus();
+        });
+
+        function navigateToStreamer(id) {
+            if (id === 'rexpubgm') {
+                alert('⌛ REX PUBGM Donation is Coming Soon!');
+                return;
+            }
+            if (window.history && window.history.pushState) {
+                window.history.pushState({}, '', '/' + id);
+            }
+            openDonationForm(id);
+        }
+
+        function checkNoteLockStatus() {
+            const noteInput = document.getElementById('donor-note');
+            const noteHint = document.getElementById('note-hint');
+            if (!noteInput) return;
+
+            noteInput.disabled = false;
+            noteInput.placeholder = 'Write your note here (English or Amharic)...';
+            if (noteHint) {
+                noteHint.innerHTML = '💬 Can be written in English or Amharic (በአማርኛ ወይም በኢንግሊዘኛ መፃፍ ይቻላል)!';
+                noteHint.style.color = '#00c6ff';
+            }
+        }
+
+        function openDonationForm(id) {
+            activeStreamer = STREAMERS[id] || STREAMERS['natepubgm'];
+            document.getElementById('target-streamer-label').textContent = activeStreamer.name;
+            document.getElementById('target-streamer-avatar').src = activeStreamer.avatar;
+            document.getElementById('step2-streamer-name').textContent = activeStreamer.name;
+
+            GATEWAYS.forEach(g => {
+                const el = document.getElementById(g.id);
+                if (el) {
+                    el.style.display = 'flex';
+                    const isAllowed = !activeStreamer.allowedGateways || activeStreamer.allowedGateways.includes(g.key);
+                    if (!isAllowed) {
+                        el.className = 'gw-option coming-soon-gw';
+                    }
+                }
+            });
+
+            selectedGw = 'Telebirr';
+            selectGateway('Telebirr');
+
+            const gridEl = document.getElementById('streamers-grid');
+            if (gridEl) gridEl.style.display = 'none';
+            const headerEl = document.getElementById('main-hub-header');
+            if (headerEl) headerEl.style.display = 'none';
+            document.getElementById('donate-card-box').className = 'donate-card show';
+            document.getElementById('donation-form').style.display = 'block';
+            document.getElementById('payment-step2').style.display = 'none';
+            checkAmountTierUnlock();
+            checkNoteLockStatus();
+        }
+
+        function showHubView() {
+            if (window.history && window.history.pushState) {
+                window.history.pushState({}, '', '/natepubgm');
+            }
+            openDonationForm('natepubgm');
+        }
+
+        window.onpopstate = (e) => {
+            const step2El = document.getElementById('payment-step2');
+            if (step2El && step2El.style.display === 'block') {
+                step2El.style.display = 'none';
+                document.getElementById('donation-form').style.display = 'block';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                openDonationForm('natepubgm');
+            }
+        };
+
+        const STICKER_NAMES = {
+            'gif1': '100 ETB Playable Sticker (GIF #1)'
+        };
+
+        const STICKER_VIDEOS = {
+            'gif1': '/stickers/gif1.mp4'
+        };
+
+        function setDonationAmount(amt) {
+            document.getElementById('donor-amount').value = amt;
+            checkAmountTierUnlock();
+        }
+
+        function checkAmountTierUnlock() {
+            const amount = parseFloat(document.getElementById('donor-amount').value) || 0;
+            const previewBox = document.getElementById('unlocked-sticker-preview-box');
+            const previewTitle = document.getElementById('unlocked-sticker-title');
+            const previewDesc = document.getElementById('unlocked-sticker-desc');
+            const amountHint = document.getElementById('amount-tier-hint');
+
+            if (amount >= 100) {
+                if (previewBox) {
+                    previewBox.style.display = 'flex';
+                    if (previewTitle) {
+                        previewTitle.style.color = '#00e676';
+                        previewTitle.innerHTML = '🌟 100 ETB PLAYABLE STICKER UNLOCKED!';
+                    }
+                    if (previewDesc) {
+                        previewDesc.style.color = '#ffffff';
+                        previewDesc.innerHTML = 'GIF Sticker animation (gif1.mp4) will play live on stream with custom sound effect!';
+                    }
+                }
+                if (amountHint) amountHint.textContent = '🌟 100 ETB tier unlocks the GIF sticker overlay!';
+            } else {
+                if (previewBox) previewBox.style.display = 'none';
+                if (amountHint) amountHint.textContent = 'Select or enter any amount you wish to donate!';
+            }
+        }
+
+        function selectGateway(gwKey) {
+            const gwObj = GATEWAYS.find(g => g.key === gwKey) || GATEWAYS[0];
+
+            if (activeStreamer && activeStreamer.allowedGateways && !activeStreamer.allowedGateways.includes(gwKey)) {
+                alert('⌛ ' + gwObj.name + ' Payment Gateway is Coming Soon!');
+                return;
+            }
+
+            selectedGw = gwKey;
+            hideError();
+
+            const curGwObj = GATEWAYS.find(g => g.key === selectedGw) || GATEWAYS[0];
+
+            GATEWAYS.forEach(g => {
+                const el = document.getElementById(g.id);
+                if (el) {
+                    if (g.key === selectedGw) {
+                        el.className = 'gw-option selected';
+                    } else if (activeStreamer.allowedGateways && activeStreamer.allowedGateways.includes(g.key)) {
+                        el.className = 'gw-option';
+                    } else {
+                        el.className = 'gw-option coming-soon-gw';
+                    }
+                }
+            });
+
+            const realnameLabel = document.getElementById('realname-label');
+            const realnameHint = document.getElementById('realname-hint');
+
+            if (realnameLabel) realnameLabel.innerHTML = `<i class="fa-solid fa-id-card"></i> ${curGwObj.name} Account Full Name`;
+            if (realnameHint) realnameHint.textContent = `Must match your ${curGwObj.name} account full name for instant verification!`;
+        }
+
+        function showError(msg) {
+            errorBanner.textContent = msg;
+            errorBanner.style.display = 'block';
+        }
+
+        function hideError() {
+            errorBanner.style.display = 'none';
+        }
+
+        function countWords(str) {
+            if (!str) return 0;
+            const words = str.trim().split(/\s+/).filter(Boolean);
+            let totalCount = 0;
+            for (const w of words) {
+                if (w.length > 12) {
+                    totalCount += Math.ceil(w.length / 6);
+                } else {
+                    totalCount += 1;
+                }
+            }
+            return totalCount;
+        }
+
+        function updateLiveCounters() {
+            const nameVal = document.getElementById('donor-name')?.value || '';
+            const noteVal = document.getElementById('donor-note')?.value || '';
+
+            const nameLen = nameVal.length;
+            const noteLen = noteVal.length;
+
+            const nameBadge = document.getElementById('name-word-badge');
+            const noteBadge = document.getElementById('note-word-badge');
+
+            if (nameBadge) {
+                nameBadge.textContent = `${nameLen} / 15 letters`;
+                if (nameLen > 15) {
+                    nameBadge.style.color = '#ff1744';
+                    document.getElementById('donor-name').style.borderColor = '#ff1744';
+                } else {
+                    nameBadge.style.color = '#00e676';
+                    document.getElementById('donor-name').style.borderColor = '';
+                }
+            }
+
+            if (noteBadge) {
+                noteBadge.textContent = `${noteLen} / 80 letters`;
+                if (noteLen > 80) {
+                    noteBadge.style.color = '#ff1744';
+                    document.getElementById('donor-note').style.borderColor = '#ff1744';
+                } else {
+                    noteBadge.style.color = '#00e676';
+                    document.getElementById('donor-note').style.borderColor = '';
+                }
+            }
+        }
+
+        document.getElementById('donation-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            hideError();
+
+            const donorName = document.getElementById('donor-name').value.trim() || 'Anonymous Fan';
+            const realName = document.getElementById('donor-realname').value.trim();
+            const note = document.getElementById('donor-note').value.trim();
+
+            const validTextRegex = /^[a-zA-Z0-9\s\.\'\,\?\!\-\u1200-\u137C\u1380-\u139F\u2D80-\u2DDF\uAB00-\uAB2F]+$/;
+            if (donorName && !validTextRegex.test(donorName)) {
+                showError('❌ Stream Overlay Nickname can only contain English or Amharic letters and numbers. Emojis and special symbols are not allowed.');
+                return;
+            }
+            if (donorName && donorName.length > 15) {
+                showError('❌ Stream Overlay Nickname cannot exceed 15 letters. Please write 15 letters or less.');
+                return;
+            }
+            if (note && !validTextRegex.test(note)) {
+                showError('❌ Note can only contain English or Amharic letters and numbers. Emojis and special symbols are not allowed.');
+                return;
+            }
+            if (note && note.length > 80) {
+                showError('❌ Note cannot exceed 80 letters. Please write 80 letters or less.');
+                return;
+            }
+
+            let finalAmount = parseFloat(document.getElementById('donor-amount').value) || 25;
+            let finalStickerId = finalAmount >= 100 ? 'gif1' : '';
+
+            if (isNaN(finalAmount) || finalAmount < 1) {
+                showError('❌ Please enter a valid donation amount (minimum 1 ETB).');
+                return;
+            }
+
+            const gwObj = GATEWAYS.find(g => g.key === selectedGw) || GATEWAYS[0];
+            const accountNumber = activeStreamer[gwObj.fullAccProp] || activeStreamer[gwObj.accProp] || activeStreamer.telebirrAcc;
+
+            if (!realName) {
+                showError('❌ Please enter your ' + gwObj.name + ' account full name.');
+                return;
+            }
+
+            const englishRegex = /^[a-zA-Z\s\.\'-]+$/;
+            if (!englishRegex.test(realName)) {
+                showError('❌ Real account full name must be written in English letters only (e.g. Robel Hiluf).');
+                return;
+            }
+
+            const words = realName.split(/\s+/).filter(Boolean);
+            if (realName.length < 5 || words.length < 2) {
+                showError('❌ Please enter your full real name including your father\'s name in English (e.g. Robel Hiluf).');
+                return;
+            }
+
+            try {
+                const targetUrl = (apiBaseUrl ? apiBaseUrl : '') + '/api/submit-web-donation';
+                const res = await fetch(targetUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        donorName, 
+                        realName,
+                        amount: finalAmount, 
+                        note, 
+                        gateway: selectedGw,
+                        accountNumber,
+                        streamerName: activeStreamer.name,
+                        streamerId: activeStreamer.id,
+                        stickerId: finalStickerId
+                    })
+                });
+
+                const data = await res.json();
+                if (data.success) {
+                    currentRefCode = data.pending.refCode;
+                    showStep2(data.pending);
+                } else {
+                    showError('❌ Submission failed: ' + (data.error || 'Unknown error'));
+                }
+            } catch (err) {
+                showError('❌ Network error: ' + err.message);
+            }
+        });
+
+        function showStep2(pending) {
+            if (window.history && window.history.pushState) {
+                window.history.pushState({ step: 2 }, '', '/' + (activeStreamer.id || 'natepubgm'));
+            }
+            document.getElementById('donation-form').style.display = 'none';
+            document.getElementById('payment-step2').style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            document.getElementById('step2-streamer-name').textContent = activeStreamer.name;
+            document.getElementById('step2-amount').textContent = pending.amount + ' ETB';
+
+            const stkSummaryBox = document.getElementById('step2-sticker-summary');
+            const stkId = pending.stickerId || (pending.amount >= 100 ? 'gif1' : '');
+
+            if (stkId === 'gif1') {
+                if (stkSummaryBox) stkSummaryBox.style.display = 'flex';
+                const stkVid = document.getElementById('step2-sticker-video');
+                const stkName = document.getElementById('step2-sticker-name');
+                if (stkVid) stkVid.src = STICKER_VIDEOS['gif1'];
+                if (stkName) stkName.textContent = '100 ETB Playable Sticker (GIF #1)';
+            } else {
+                if (stkSummaryBox) stkSummaryBox.style.display = 'none';
+            }
+
+            const recHolder = document.getElementById('receiver-holder');
+            const recLabel = document.getElementById('receiver-label');
+            const recNum = document.getElementById('receiver-number');
+
+            recHolder.textContent = activeStreamer.holderName;
+
+            const gwObj = GATEWAYS.find(g => g.key === pending.gateway) || GATEWAYS[0];
+            recLabel.textContent = `${gwObj.label}:`;
+            recNum.textContent = activeStreamer[gwObj.accProp] || activeStreamer.telebirrLocal;
+        }
+
+        function copyReceiverNumber() {
+            const num = document.getElementById('receiver-number').textContent;
+            navigator.clipboard.writeText(num);
+            alert('Copied number: ' + num);
+        }
+
+        function setupSocketListeners() {
+            if (!socket || !socket.on) return;
+            socket.on('web_donation_confirmed', (data) => {
+                if (data && (data.refCode === currentRefCode || !currentRefCode)) {
+                    const statusPill = document.getElementById('live-status-pill');
+                    const statusDot = document.getElementById('status-dot');
+                    const statusText = document.getElementById('status-text');
+
+                    if (statusPill && statusDot && statusText) {
+                        statusPill.style.background = 'rgba(0, 230, 118, 0.2)';
+                        statusPill.style.border = '1px solid #00e676';
+                        statusDot.style.background = '#00e676';
+                        statusDot.style.animation = 'none';
+                        statusText.innerHTML = '🎉 <strong>PAYMENT VERIFIED!</strong> Your alert & note message are popping up live on stream right now!';
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>

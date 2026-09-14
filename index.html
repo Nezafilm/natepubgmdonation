@@ -590,15 +590,33 @@
         }
 
         function checkNoteLockStatus() {
+            const amountInput = document.getElementById('donor-amount');
+            const amount = parseFloat(amountInput?.value) || 0;
             const noteInput = document.getElementById('donor-note');
             const noteHint = document.getElementById('note-hint');
             if (!noteInput) return;
 
-            noteInput.disabled = false;
-            noteInput.placeholder = 'Write your note here (English or Amharic)...';
-            if (noteHint) {
-                noteHint.innerHTML = '💬 Can be written in English or Amharic (በአማርኛ ወይም በኢንግሊዘኛ መፃፍ ይቻላል)!';
-                noteHint.style.color = '#00c6ff';
+            if (amount < 100) {
+                noteInput.disabled = true;
+                noteInput.value = '';
+                noteInput.placeholder = '🔒 Note is locked for donations under 100 ETB (Donate 100 ETB or more to unlock custom note & GIF sticker!)';
+                noteInput.style.opacity = '0.55';
+                noteInput.style.cursor = 'not-allowed';
+                noteInput.style.background = 'rgba(255, 255, 255, 0.02)';
+                noteInput.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                if (noteHint) {
+                    noteHint.innerHTML = '<span style="color: #ff5252; font-weight: 700;">🔒 Note locked under 100 ETB (100+ ETB unlocks custom note)</span><span id="note-word-badge" style="font-weight: 800; color: #ff5252;">LOCKED</span>';
+                }
+            } else {
+                noteInput.disabled = false;
+                noteInput.placeholder = 'Write your custom note here (max 80 letters, English or Amharic)...';
+                noteInput.style.opacity = '1';
+                noteInput.style.cursor = 'text';
+                noteInput.style.background = 'rgba(255, 255, 255, 0.05)';
+                noteInput.style.borderColor = 'rgba(0, 230, 118, 0.4)';
+                if (noteHint) {
+                    noteHint.innerHTML = '<span>English or Amharic letters only (no emojis)</span><span id="note-word-badge" style="font-weight: 800; color: #00e676;">' + (noteInput.value.length) + ' / 80 letters</span>';
+                }
             }
         }
 
@@ -630,7 +648,6 @@
             document.getElementById('donation-form').style.display = 'block';
             document.getElementById('payment-step2').style.display = 'none';
             checkAmountTierUnlock();
-            checkNoteLockStatus();
         }
 
         function showHubView() {
@@ -675,6 +692,9 @@
             const previewDesc = document.getElementById('unlocked-sticker-desc');
             const amountHint = document.getElementById('amount-tier-hint');
 
+            // Lock or unlock note field dynamically
+            checkNoteLockStatus();
+
             // Dynamic Preset Button Active Highlight Algorithm
             const presetBtns = document.querySelectorAll('.preset-btn');
             presetBtns.forEach(btn => {
@@ -691,17 +711,17 @@
                     previewBox.style.display = 'flex';
                     if (previewTitle) {
                         previewTitle.style.color = '#00e676';
-                        previewTitle.innerHTML = '🌟 100+ ETB ANIMATED GIF STICKER UNLOCKED!';
+                        previewTitle.innerHTML = '🌟 100+ ETB ANIMATED GIF STICKER & NOTE UNLOCKED!';
                     }
                     if (previewDesc) {
                         previewDesc.style.color = '#ffffff';
-                        previewDesc.innerHTML = 'Donations of 100 ETB or more will pop up live on stream with custom GIF sticker animation & sound!';
+                        previewDesc.innerHTML = 'Donations of 100 ETB or more will pop up live on stream with custom GIF sticker animation, custom note & full TTS voice reading!';
                     }
                 }
-                if (amountHint) amountHint.innerHTML = '🌟 <strong style="color: #00e676;">100+ ETB GIF Sticker Unlocked!</strong> Live animated sticker will pop up on stream!';
+                if (amountHint) amountHint.innerHTML = '🌟 <strong style="color: #00e676;">100+ ETB Unlocked!</strong> Custom note, live GIF sticker & full TTS reading active!';
             } else {
                 if (previewBox) previewBox.style.display = 'none';
-                if (amountHint) amountHint.innerHTML = '💡 <strong>Tip:</strong> Donating <strong>100 ETB or more</strong> unlocks a live animated GIF sticker on stream!';
+                if (amountHint) amountHint.innerHTML = '🔒 <strong>Note locked under 100 ETB.</strong> Donating <strong>100 ETB or more</strong> unlocks custom note, live GIF sticker & full TTS!';
             }
         }
 
@@ -821,6 +841,7 @@
             }
 
             let finalAmount = parseFloat(document.getElementById('donor-amount').value) || 25;
+            let finalNote = finalAmount >= 100 ? note : '';
             let finalStickerId = finalAmount >= 100 ? 'gif1' : '';
 
             if (isNaN(finalAmount) || finalAmount < 1) {
@@ -852,7 +873,7 @@
                 donorName, 
                 realName,
                 amount: finalAmount, 
-                note, 
+                note: finalNote, 
                 gateway: selectedGw,
                 accountNumber,
                 streamerName: activeStreamer.name,

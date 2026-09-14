@@ -476,16 +476,30 @@
             if (isLocal) {
                 return '';
             }
-            try {
-                const res = await fetch('./api_config.json?_cb=' + Date.now());
-                if (res.ok) {
-                    const data = await res.json();
-                    if (data && data.tunnelUrl) {
-                        return data.tunnelUrl.replace(/\/$/, '');
+
+            const pathname = window.location.pathname.toLowerCase();
+            let repoPrefix = '/';
+            if (pathname.includes('/natepubgmdonation')) {
+                repoPrefix = '/natepubgmdonation/';
+            }
+
+            const configUrls = [
+                window.location.origin + repoPrefix + 'api_config.json?_cb=' + Date.now(),
+                repoPrefix + 'api_config.json?_cb=' + Date.now(),
+                './api_config.json?_cb=' + Date.now(),
+                '../api_config.json?_cb=' + Date.now()
+            ];
+
+            for (const configUrl of configUrls) {
+                try {
+                    const res = await fetch(configUrl);
+                    if (res.ok) {
+                        const data = await res.json();
+                        if (data && data.tunnelUrl) {
+                            return data.tunnelUrl.replace(/\/$/, '');
+                        }
                     }
-                }
-            } catch (e) {
-                console.warn('Could not load api_config.json:', e);
+                } catch (e) {}
             }
             return '';
         }
@@ -805,6 +819,18 @@
             }
 
             try {
+                if (!apiBaseUrl) {
+                    apiBaseUrl = await getApiBaseUrl();
+                }
+                const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+                if (!isLocal && !apiBaseUrl) {
+                    apiBaseUrl = await getApiBaseUrl();
+                    if (!apiBaseUrl) {
+                        showError('❌ Streamer server connection offline. Please make sure start.bat is running on the streamer PC!');
+                        return;
+                    }
+                }
+
                 const targetUrl = (apiBaseUrl ? apiBaseUrl : '') + '/api/submit-web-donation';
                 const res = await fetch(targetUrl, {
                     method: 'POST',

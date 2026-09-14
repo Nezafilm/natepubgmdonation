@@ -149,8 +149,12 @@
 
         /* Amount Presets */
         .amount-presets { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-bottom: 10px; }
-        .preset-btn { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,0,85,0.2); color: #fff; border-radius: 10px; padding: 8px 4px; font-size: 12px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
-        .preset-btn:hover { background: rgba(255, 0, 85, 0.25); border-color: #ff0055; box-shadow: 0 0 10px rgba(255, 0, 85, 0.3); }
+        .preset-btn { background: rgba(255,255,255,0.06); border: 1.5px solid rgba(255,0,85,0.2); color: rgba(255,255,255,0.85); border-radius: 12px; padding: 10px 14px; font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); user-select: none; }
+        .preset-btn:hover { background: rgba(255, 0, 85, 0.25); border-color: #ff0055; box-shadow: 0 0 12px rgba(255, 0, 85, 0.35); transform: translateY(-2px); color: #fff; }
+        .preset-btn.active { background: linear-gradient(135deg, #ff0055, #ff5500) !important; border-color: #ff0055 !important; color: #fff !important; font-weight: 800 !important; box-shadow: 0 0 20px rgba(255, 0, 85, 0.65) !important; transform: scale(1.06); }
+        .preset-gif-btn { background: rgba(255, 0, 127, 0.15); border: 1.5px solid rgba(255, 0, 127, 0.5); color: #fff; font-weight: 700; }
+        .preset-gif-btn:hover { background: linear-gradient(135deg, #ff007f, #7928ca); border-color: #ff007f; box-shadow: 0 0 16px rgba(255, 0, 127, 0.6); }
+        .preset-gif-btn.active { background: linear-gradient(135deg, #ff007f, #7928ca) !important; border-color: #00e676 !important; color: #fff !important; font-weight: 900 !important; box-shadow: 0 0 24px rgba(255, 0, 127, 0.85), 0 0 12px rgba(0, 230, 118, 0.6) !important; transform: scale(1.06); }
 
         /* Floating Cyber Bubbles */
         .bubble-container {
@@ -344,12 +348,12 @@
             <div id="normal-amount-section" class="form-group">
                 <label><i class="fa-solid fa-coins"></i> Donation Amount (ETB)</label>
                 <div class="preset-chips" style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px;">
-                    <button type="button" class="preset-btn" onclick="setDonationAmount(5)">5 ETB</button>
-                    <button type="button" class="preset-btn" onclick="setDonationAmount(25)">25 ETB</button>
-                    <button type="button" class="preset-btn" onclick="setDonationAmount(50)">50 ETB</button>
-                    <button type="button" class="preset-btn" onclick="setDonationAmount(100)" style="background: linear-gradient(135deg, #ff007f, #7928ca); border-color: #ff007f; color: #fff; font-weight: bold;">100 ETB 🌟 GIF</button>
-                    <button type="button" class="preset-btn" onclick="setDonationAmount(500)">500 ETB</button>
-                    <button type="button" class="preset-btn" onclick="setDonationAmount(1000)">1000 ETB</button>
+                    <button type="button" class="preset-btn" data-amount="5" onclick="setDonationAmount(5)">5 ETB</button>
+                    <button type="button" class="preset-btn" data-amount="25" onclick="setDonationAmount(25)">25 ETB</button>
+                    <button type="button" class="preset-btn" data-amount="50" onclick="setDonationAmount(50)">50 ETB</button>
+                    <button type="button" class="preset-btn preset-gif-btn" data-amount="100" onclick="setDonationAmount(100)">100 ETB 🌟 GIF</button>
+                    <button type="button" class="preset-btn" data-amount="500" onclick="setDonationAmount(500)">500 ETB</button>
+                    <button type="button" class="preset-btn" data-amount="1000" onclick="setDonationAmount(1000)">1000 ETB</button>
                 </div>
                 <input type="number" id="donor-amount" min="1" value="25" required>
                 <div class="field-hint" id="amount-tier-hint" style="color: #00c6ff; margin-top: 6px; font-weight: 600;">Select or enter any custom amount you wish to donate!</div>
@@ -647,16 +651,31 @@
         };
 
         function setDonationAmount(amt) {
-            document.getElementById('donor-amount').value = amt;
+            const input = document.getElementById('donor-amount');
+            if (input) {
+                input.value = amt;
+            }
             checkAmountTierUnlock();
         }
 
         function checkAmountTierUnlock() {
-            const amount = parseFloat(document.getElementById('donor-amount').value) || 0;
+            const amountInput = document.getElementById('donor-amount');
+            const amount = parseFloat(amountInput?.value) || 0;
             const previewBox = document.getElementById('unlocked-sticker-preview-box');
             const previewTitle = document.getElementById('unlocked-sticker-title');
             const previewDesc = document.getElementById('unlocked-sticker-desc');
             const amountHint = document.getElementById('amount-tier-hint');
+
+            // Dynamic Preset Button Active Highlight Algorithm
+            const presetBtns = document.querySelectorAll('.preset-btn');
+            presetBtns.forEach(btn => {
+                const btnAmt = parseFloat(btn.getAttribute('data-amount') || btn.getAttribute('onclick')?.match(/\d+/)?.[0]);
+                if (!isNaN(btnAmt) && Math.abs(btnAmt - amount) < 0.01) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
 
             if (amount >= 100) {
                 if (previewBox) {

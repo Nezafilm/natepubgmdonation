@@ -477,6 +477,7 @@
                 return '';
             }
 
+            const cb = Date.now();
             const pathname = window.location.pathname.toLowerCase();
             let repoPrefix = '/';
             if (pathname.includes('/natepubgmdonation')) {
@@ -484,15 +485,16 @@
             }
 
             const configUrls = [
-                window.location.origin + repoPrefix + 'api_config.json?_cb=' + Date.now(),
-                repoPrefix + 'api_config.json?_cb=' + Date.now(),
-                './api_config.json?_cb=' + Date.now(),
-                '../api_config.json?_cb=' + Date.now()
+                'https://raw.githubusercontent.com/Nezafilm/natepubgmdonation/main/api_config.json?_cb=' + cb,
+                window.location.origin + repoPrefix + 'api_config.json?_cb=' + cb,
+                repoPrefix + 'api_config.json?_cb=' + cb,
+                './api_config.json?_cb=' + cb,
+                '../api_config.json?_cb=' + cb
             ];
 
             for (const configUrl of configUrls) {
                 try {
-                    const res = await fetch(configUrl);
+                    const res = await fetch(configUrl, { cache: 'no-store' });
                     if (res.ok) {
                         const data = await res.json();
                         if (data && data.tunnelUrl) {
@@ -818,45 +820,70 @@
                 return;
             }
 
+            const payload = { 
+                donorName, 
+                realName,
+                amount: finalAmount, 
+                note, 
+                gateway: selectedGw,
+                accountNumber,
+                streamerName: activeStreamer.name,
+                streamerId: activeStreamer.id,
+                stickerId: finalStickerId
+            };
+
+            const requestHeaders = {
+                'Content-Type': 'application/json',
+                'bypass-tunnel-reminder': 'true',
+                'ngrok-skip-browser-warning': 'true'
+            };
+
+            const sendRequest = async (url) => {
+                const targetUrl = (url ? url.replace(/\/$/, '') : '') + '/api/submit-web-donation';
+                const res = await fetch(targetUrl, {
+                    method: 'POST',
+                    headers: requestHeaders,
+                    body: JSON.stringify(payload)
+                });
+                return await res.json();
+            };
+
             try {
-                if (!apiBaseUrl) {
-                    apiBaseUrl = await getApiBaseUrl();
-                }
+                let currentUrl = apiBaseUrl || await getApiBaseUrl();
                 const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-                if (!isLocal && !apiBaseUrl) {
-                    apiBaseUrl = await getApiBaseUrl();
-                    if (!apiBaseUrl) {
+                if (!isLocal && !currentUrl) {
+                    currentUrl = await getApiBaseUrl();
+                    if (!currentUrl) {
                         showError('❌ Streamer server connection offline. Please make sure start.bat is running on the streamer PC!');
                         return;
                     }
                 }
+                apiBaseUrl = currentUrl;
 
-                const targetUrl = (apiBaseUrl ? apiBaseUrl : '') + '/api/submit-web-donation';
-                const res = await fetch(targetUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
-                        donorName, 
-                        realName,
-                        amount: finalAmount, 
-                        note, 
-                        gateway: selectedGw,
-                        accountNumber,
-                        streamerName: activeStreamer.name,
-                        streamerId: activeStreamer.id,
-                        stickerId: finalStickerId
-                    })
-                });
+                let data;
+                try {
+                    data = await sendRequest(apiBaseUrl);
+                } catch (firstErr) {
+                    console.warn('First fetch attempt failed, refreshing tunnel URL from GitHub...', firstErr);
+                    const freshUrl = await getApiBaseUrl();
+                    if (freshUrl) {
+                        apiBaseUrl = freshUrl;
+                        data = await sendRequest(apiBaseUrl);
+                    } else {
+                        throw firstErr;
+                    }
+                }
 
-                const data = await res.json();
-                if (data.success) {
+                if (data && data.success) {
                     currentRefCode = data.pending.refCode;
                     showStep2(data.pending);
+                } else if (data && data.error) {
+                    showError('❌ Submission failed: ' + data.error);
                 } else {
-                    showError('❌ Submission failed: ' + (data.error || 'Unknown error'));
+                    showError('❌ Submission failed. Please try again.');
                 }
             } catch (err) {
-                showError('❌ Network error: ' + err.message);
+                showError('❌ Server Connection Error: Streamer server is offline or restarting. Please make sure start.bat is running on the streamer PC!');
             }
         });
 

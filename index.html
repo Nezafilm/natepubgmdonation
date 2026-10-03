@@ -479,7 +479,7 @@
 
         const errorBanner = document.getElementById('error-banner');
 
-        async function getApiBaseUrl() {
+        async function getApiBaseUrl(forceRefresh = false) {
             const urlParams = new URLSearchParams(window.location.search);
             const paramApi = urlParams.get('api');
             if (paramApi) {
@@ -490,7 +490,23 @@
                 return '';
             }
 
+            if (!forceRefresh && apiBaseUrl) {
+                return apiBaseUrl;
+            }
+
             const cb = Date.now();
+            const primaryUrl = 'https://raw.githubusercontent.com/Nezafilm/natepubgmdonation/main/api_config.json?_cb=' + cb;
+            try {
+                const res = await fetch(primaryUrl, { cache: 'no-store' });
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data && data.tunnelUrl) {
+                        apiBaseUrl = data.tunnelUrl.replace(/\/$/, '');
+                        return apiBaseUrl;
+                    }
+                }
+            } catch (e) {}
+
             const pathname = window.location.pathname.toLowerCase();
             let repoPrefix = '/';
             if (pathname.includes('/natepubgmdonation')) {
@@ -498,7 +514,6 @@
             }
 
             const configUrls = [
-                'https://raw.githubusercontent.com/Nezafilm/natepubgmdonation/main/api_config.json?_cb=' + cb,
                 window.location.origin + repoPrefix + 'api_config.json?_cb=' + cb,
                 repoPrefix + 'api_config.json?_cb=' + cb,
                 './api_config.json?_cb=' + cb,
@@ -511,12 +526,13 @@
                     if (res.ok) {
                         const data = await res.json();
                         if (data && data.tunnelUrl) {
-                            return data.tunnelUrl.replace(/\/$/, '');
+                            apiBaseUrl = data.tunnelUrl.replace(/\/$/, '');
+                            return apiBaseUrl;
                         }
                     }
                 } catch (e) {}
             }
-            return '';
+            return apiBaseUrl || '';
         }
 
         async function initNetwork() {
@@ -898,14 +914,11 @@
             };
 
             try {
-                let currentUrl = apiBaseUrl || await getApiBaseUrl();
+                let currentUrl = await getApiBaseUrl(true);
                 const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
                 if (!isLocal && !currentUrl) {
-                    currentUrl = await getApiBaseUrl();
-                    if (!currentUrl) {
-                        showError('❌ Streamer server connection offline. Please make sure start.bat is running on the streamer PC!');
-                        return;
-                    }
+                    showError('❌ Streamer server connection offline. Please make sure start.bat is running on the streamer PC!');
+                    return;
                 }
                 apiBaseUrl = currentUrl;
 
@@ -914,7 +927,8 @@
                     data = await sendRequest(apiBaseUrl);
                 } catch (firstErr) {
                     console.warn('First fetch attempt failed, refreshing tunnel URL from GitHub...', firstErr);
-                    const freshUrl = await getApiBaseUrl();
+                    await new Promise(r => setTimeout(r, 800));
+                    const freshUrl = await getApiBaseUrl(true);
                     if (freshUrl) {
                         apiBaseUrl = freshUrl;
                         data = await sendRequest(apiBaseUrl);

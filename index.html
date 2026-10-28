@@ -498,29 +498,6 @@
             background: rgba(56, 189, 248, 0.12);
             border-color: rgba(56, 189, 248, 0.35);
         }
-
-        .lb-streamer-dock {
-            margin-top: 18px;
-            padding-top: 14px;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .btn-copy-studio-link {
-            background: rgba(0, 198, 255, 0.15);
-            border: 1px solid rgba(0, 198, 255, 0.4);
-            color: #00c6ff;
-            padding: 6px 14px;
-            border-radius: 8px;
-            font-size: 11px;
-            font-weight: 800;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .btn-copy-studio-link:hover {
-            background: #00c6ff;
-            color: #000;
-        }
     </style>
 </head>
 <body>
@@ -747,20 +724,6 @@
         <div class="lb-rows-list" id="web-lb-rows">
             <div style="text-align: center; padding: 18px; color: #94a3b8; font-size: 13px;">
                 <i class="fa-solid fa-spinner fa-spin"></i> Loading live verified leaderboard...
-            </div>
-        </div>
-
-        <!-- Studio Browser Source Link Helper for Streamer -->
-        <div class="lb-streamer-dock">
-            <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;">
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <span style="font-size: 15px;">📺</span>
-                    <span style="font-size: 12px; font-weight: 700; color: #cbd5e1;">Studio Top 5 Overlay:</span>
-                    <code style="background: rgba(0,0,0,0.4); padding: 4px 8px; border-radius: 6px; color: #00c6ff; font-size: 11px;" id="web-studio-link-display">http://127.0.0.1:3000/leaderboard</code>
-                </div>
-                <button type="button" class="btn-copy-studio-link" onclick="copyStudioLeaderboardLink()">
-                    📋 Copy Overlay Link
-                </button>
             </div>
         </div>
     </div>
@@ -1739,12 +1702,6 @@
             });
 
             container.innerHTML = html;
-        }
-
-        function copyStudioLeaderboardLink() {
-            const url = document.getElementById('web-studio-link-display')?.textContent || 'http://127.0.0.1:3000/leaderboard';
-            navigator.clipboard.writeText(url);
-            alert('✅ Copied Studio Top 5 Overlay Link!\n\nPaste this URL into OBS Studio or TikTok LIVE Studio as a Browser Source:\n' + url);
         }
 
         function escapeHtml(str) {

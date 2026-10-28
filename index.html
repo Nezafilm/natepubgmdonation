@@ -261,6 +261,266 @@
         .status-pill { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.08); padding: 10px 20px; border-radius: 20px; font-size: 13px; margin-top: 18px; border: 1px solid rgba(255,255,255,0.15); }
         .status-dot { width: 10px; height: 10px; background: #ffc107; border-radius: 50%; animation: pulse 1.5s infinite; }
         @keyframes pulse { 0% { opacity: 0.3; } 50% { opacity: 1; } 100% { opacity: 0.3; } }
+
+        /* Web Leaderboard Section Card */
+        .leaderboard-section-card {
+            width: 100%;
+            max-width: 480px;
+            background: rgba(14, 18, 28, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 20px;
+            padding: 22px;
+            margin-top: 24px;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+            display: block;
+        }
+
+        .lb-header {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+
+        .lb-header-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .lb-trophy {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #ffd700, #ff8800);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            box-shadow: 0 4px 16px rgba(255, 215, 0, 0.35);
+            color: #000;
+            flex-shrink: 0;
+        }
+
+        .lb-header-title h3 {
+            font-size: 18px;
+            font-weight: 900;
+            color: #fff;
+            letter-spacing: 0.5px;
+        }
+
+        .lb-header-title p {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 2px;
+        }
+
+        .lb-tabs-nav {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            background: rgba(0, 0, 0, 0.35);
+            padding: 5px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .lb-tab-btn {
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .lb-tab-btn:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .lb-tab-btn.active {
+            background: linear-gradient(135deg, #00e676, #00c6ff);
+            color: #000;
+            box-shadow: 0 4px 15px rgba(0, 230, 118, 0.3);
+        }
+
+        .lb-tab-btn.active-paypal {
+            background: linear-gradient(135deg, #0070ba, #00c6ff);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(0, 112, 186, 0.4);
+        }
+
+        .lb-stats-banner {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            padding: 12px 8px;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .lb-stat-label {
+            display: block;
+            font-size: 10px;
+            font-weight: 700;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .lb-stat-val {
+            font-size: 14px;
+            font-weight: 900;
+            color: #00e676;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: block;
+        }
+
+        .lb-rows-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .lb-row-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 14px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .lb-row-item:hover {
+            transform: translateY(-1px);
+            border-color: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .lb-row-item.rank-gold {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.12), rgba(255, 136, 0, 0.05));
+            border: 1.5px solid rgba(255, 215, 0, 0.45);
+        }
+
+        .lb-row-item.rank-silver {
+            background: linear-gradient(135deg, rgba(226, 232, 240, 0.08), rgba(255, 255, 255, 0.02));
+            border: 1px solid rgba(226, 232, 240, 0.3);
+        }
+
+        .lb-row-item.rank-bronze {
+            background: linear-gradient(135deg, rgba(217, 119, 6, 0.1), rgba(255, 255, 255, 0.02));
+            border: 1px solid rgba(217, 119, 6, 0.3);
+        }
+
+        .lb-row-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .lb-rank-badge {
+            width: 26px;
+            height: 26px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 900;
+            color: #cbd5e1;
+            flex-shrink: 0;
+        }
+
+        .rank-gold .lb-rank-badge {
+            background: linear-gradient(135deg, #ffd700, #ff8800);
+            color: #000;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .rank-silver .lb-rank-badge {
+            background: linear-gradient(135deg, #e2e8f0, #94a3b8);
+            color: #000;
+        }
+
+        .rank-bronze .lb-rank-badge {
+            background: linear-gradient(135deg, #d97706, #92400e);
+            color: #fff;
+        }
+
+        .lb-donor-name {
+            font-size: 14px;
+            font-weight: 800;
+            color: #fff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .rank-gold .lb-donor-name {
+            color: #ffd700;
+            font-weight: 900;
+        }
+
+        .lb-amount-badge {
+            font-size: 13px;
+            font-weight: 900;
+            color: #00e676;
+            background: rgba(0, 230, 118, 0.12);
+            padding: 5px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 230, 118, 0.3);
+            white-space: nowrap;
+        }
+
+        .lb-amount-badge.paypal {
+            color: #38bdf8;
+            background: rgba(56, 189, 248, 0.12);
+            border-color: rgba(56, 189, 248, 0.35);
+        }
+
+        .lb-streamer-dock {
+            margin-top: 18px;
+            padding-top: 14px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .btn-copy-studio-link {
+            background: rgba(0, 198, 255, 0.15);
+            border: 1px solid rgba(0, 198, 255, 0.4);
+            color: #00c6ff;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-copy-studio-link:hover {
+            background: #00c6ff;
+            color: #000;
+        }
     </style>
 </head>
 <body>
@@ -446,6 +706,65 @@
         </div>
     </div>
 
+    <!-- Live Stream Top Supporters Leaderboard Card -->
+    <div class="leaderboard-section-card" id="web-leaderboard-card">
+        <div class="lb-header">
+            <div class="lb-header-title">
+                <div class="lb-trophy">🏆</div>
+                <div>
+                    <h3>Top Supporters Leaderboard</h3>
+                    <p>Audited live stream donations (Real money only)</p>
+                </div>
+            </div>
+            <!-- Currency Toggle Tabs -->
+            <div class="lb-tabs-nav">
+                <button type="button" class="lb-tab-btn active" id="lb-tab-etb" onclick="switchWebLbTab('ETB')">
+                    <span>🇪🇹 Telebirr & CBE (ETB)</span>
+                </button>
+                <button type="button" class="lb-tab-btn" id="lb-tab-paypal" onclick="switchWebLbTab('USD')">
+                    <span>🅿️ PayPal ($ USD)</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Leaderboard Stats Summary -->
+        <div class="lb-stats-banner">
+            <div class="lb-stat-item">
+                <span class="lb-stat-label">Total Verified</span>
+                <span class="lb-stat-val" id="lb-total-verified">...</span>
+            </div>
+            <div class="lb-stat-item">
+                <span class="lb-stat-label">Top Contributor</span>
+                <span class="lb-stat-val" id="lb-top-contributor">...</span>
+            </div>
+            <div class="lb-stat-item">
+                <span class="lb-stat-label">Supporters</span>
+                <span class="lb-stat-val" id="lb-supporter-count">...</span>
+            </div>
+        </div>
+
+        <!-- Rows List -->
+        <div class="lb-rows-list" id="web-lb-rows">
+            <div style="text-align: center; padding: 18px; color: #94a3b8; font-size: 13px;">
+                <i class="fa-solid fa-spinner fa-spin"></i> Loading live verified leaderboard...
+            </div>
+        </div>
+
+        <!-- Studio Browser Source Link Helper for Streamer -->
+        <div class="lb-streamer-dock">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 15px;">📺</span>
+                    <span style="font-size: 12px; font-weight: 700; color: #cbd5e1;">Studio Top 5 Overlay:</span>
+                    <code style="background: rgba(0,0,0,0.4); padding: 4px 8px; border-radius: 6px; color: #00c6ff; font-size: 11px;" id="web-studio-link-display">http://127.0.0.1:3000/leaderboard</code>
+                </div>
+                <button type="button" class="btn-copy-studio-link" onclick="copyStudioLeaderboardLink()">
+                    📋 Copy Overlay Link
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
         const GATEWAYS = [
             { id: 'gw-telebirr', key: 'Telebirr', name: 'Telebirr', accProp: 'telebirrLocal', fullAccProp: 'telebirrAcc', label: 'Telebirr Phone' },
@@ -626,6 +945,7 @@
                 openDonationForm('natepubgm');
             }
             checkNoteLockStatus();
+            fetchWebLeaderboard();
         });
 
         function navigateToStreamer(id) {
@@ -1217,8 +1537,220 @@
                         statusDot.style.animation = 'none';
                         statusText.innerHTML = '🎉 <strong>PAYMENT VERIFIED!</strong> Your alert & note message are popping up live on stream right now!';
                     }
+                    fetchWebLeaderboard();
                 }
             });
+
+            socket.on('leaderboard_data', (data) => {
+                if (data) {
+                    webLeaderboardData = data;
+                    renderWebLeaderboard();
+                }
+            });
+
+            socket.on('leaderboard_updated', (data) => {
+                if (data) {
+                    webLeaderboardData = data;
+                    renderWebLeaderboard();
+                }
+            });
+
+            socket.emit('get_leaderboard_data');
+        }
+
+        let webLeaderboardData = { etb: [], paypal: [] };
+        let activeWebLbTab = 'ETB';
+
+        async function fetchWebLeaderboard() {
+            let data = null;
+            try {
+                const apiBase = await getApiBaseUrl();
+                const res = await fetch((apiBase ? apiBase.replace(/\/$/, '') : '') + '/api/leaderboard', { cache: 'no-store' });
+                if (res.ok) {
+                    data = await res.json();
+                }
+            } catch (e) {
+                console.warn('[Leaderboard] Primary fetch failed, checking fallback history...');
+            }
+
+            if (data && (data.etb || data.paypal)) {
+                webLeaderboardData = data;
+                renderWebLeaderboard();
+                return;
+            }
+
+            // Fallback: fetch donations_history.json
+            try {
+                const cb = Date.now();
+                const histUrls = [
+                    './donations_history.json?_cb=' + cb,
+                    'https://raw.githubusercontent.com/Nezafilm/natepubgmdonation/main/donations_history.json?_cb=' + cb
+                ];
+                for (const url of histUrls) {
+                    try {
+                        const hRes = await fetch(url, { cache: 'no-store' });
+                        if (hRes.ok) {
+                            const rawHist = await hRes.json();
+                            computeClientLeaderboard(rawHist);
+                            return;
+                        }
+                    } catch (err) {}
+                }
+            } catch (err) {}
+        }
+
+        function computeClientLeaderboard(history) {
+            if (!Array.isArray(history)) return;
+            // Exclude ALL test amounts strictly
+            const genuine = history.filter(d => 
+                d && !d.isTest && 
+                !String(d.txId || '').startsWith('TEST_') && 
+                !String(d.rawBody || '').toLowerCase().includes('simulated') &&
+                parseFloat(d.amount) > 0
+            );
+
+            const isPaypal = (d) => String(d.gateway || '').toLowerCase() === 'paypal' || String(d.currency || '').toUpperCase() === 'USD';
+
+            const aggregate = (items, cur) => {
+                const map = new Map();
+                for (const item of items) {
+                    const rawName = (item.donorName || 'Anonymous Fan').trim();
+                    const isAnon = rawName.toLowerCase() === 'anonymous fan' || rawName === 'Anonymous';
+                    const key = isAnon ? `anon_${item.txId || Math.random()}` : rawName.toLowerCase();
+                    const amt = parseFloat(item.amount) || 0;
+                    const prev = map.get(key);
+                    if (prev) {
+                        prev.totalAmount += amt;
+                        prev.count += 1;
+                    } else {
+                        map.set(key, { name: rawName, isAnonymous: isAnon, totalAmount: amt, currency: cur, count: 1 });
+                    }
+                }
+                return Array.from(map.values())
+                    .sort((a, b) => b.totalAmount - a.totalAmount)
+                    .map((d, i) => ({
+                        rank: i + 1,
+                        name: d.name,
+                        isAnonymous: d.isAnonymous,
+                        totalAmount: d.totalAmount,
+                        formattedAmount: d.totalAmount.toLocaleString('en-US', {
+                            minimumFractionDigits: cur === 'USD' ? 2 : 0,
+                            maximumFractionDigits: 2
+                        }),
+                        currency: cur,
+                        count: d.count
+                    }));
+            };
+
+            webLeaderboardData = {
+                etb: aggregate(genuine.filter(d => !isPaypal(d)), 'ETB'),
+                paypal: aggregate(genuine.filter(d => isPaypal(d)), 'USD')
+            };
+            renderWebLeaderboard();
+        }
+
+        function switchWebLbTab(tab) {
+            activeWebLbTab = tab;
+            const btnEtb = document.getElementById('lb-tab-etb');
+            const btnPaypal = document.getElementById('lb-tab-paypal');
+            if (activeWebLbTab === 'ETB') {
+                if (btnEtb) { btnEtb.className = 'lb-tab-btn active'; }
+                if (btnPaypal) { btnPaypal.className = 'lb-tab-btn'; }
+            } else {
+                if (btnEtb) { btnEtb.className = 'lb-tab-btn'; }
+                if (btnPaypal) { btnPaypal.className = 'lb-tab-btn active-paypal'; }
+            }
+            renderWebLeaderboard();
+        }
+
+        function renderWebLeaderboard() {
+            const container = document.getElementById('web-lb-rows');
+            const totalVerifiedEl = document.getElementById('lb-total-verified');
+            const topContributorEl = document.getElementById('lb-top-contributor');
+            const supporterCountEl = document.getElementById('lb-supporter-count');
+            if (!container) return;
+
+            const isPaypal = activeWebLbTab === 'USD';
+            const list = isPaypal ? (webLeaderboardData.paypal || []) : (webLeaderboardData.etb || []);
+            const totalSum = list.reduce((s, i) => s + (parseFloat(i.totalAmount) || 0), 0);
+
+            if (totalVerifiedEl) {
+                totalVerifiedEl.textContent = isPaypal 
+                    ? `$${totalSum.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD`
+                    : `${totalSum.toLocaleString('en-US')} ETB`;
+                totalVerifiedEl.style.color = isPaypal ? '#38bdf8' : '#00e676';
+            }
+
+            if (topContributorEl) {
+                topContributorEl.textContent = list.length > 0 ? list[0].name : 'None yet';
+            }
+
+            if (supporterCountEl) {
+                supporterCountEl.textContent = `${list.length} Supporters`;
+            }
+
+            if (list.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 24px 16px; background: rgba(255,255,255,0.02); border: 1px dashed rgba(255,255,255,0.1); border-radius: 14px;">
+                        <div style="font-size: 28px; margin-bottom: 6px;">${isPaypal ? '🅿️' : '🌟'}</div>
+                        <div style="font-size: 14px; font-weight: 800; color: #fff; margin-bottom: 4px;">
+                            ${isPaypal ? 'No PayPal Donations Yet' : 'No Donations Yet'}
+                        </div>
+                        <div style="font-size: 12px; color: #94a3b8;">
+                            ${isPaypal ? 'Be the first international supporter to donate and claim the #1 spot!' : 'Be the first to donate and claim the #1 spot on stream!'}
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            list.forEach((item, idx) => {
+                const rank = idx + 1;
+                let rankClass = '';
+                let rankBadge = `${rank}`;
+
+                if (rank === 1) {
+                    rankClass = 'rank-gold';
+                    rankBadge = '👑';
+                } else if (rank === 2) {
+                    rankClass = 'rank-silver';
+                    rankBadge = '🥈';
+                } else if (rank === 3) {
+                    rankClass = 'rank-bronze';
+                    rankBadge = '🥉';
+                }
+
+                const dispAmt = isPaypal 
+                    ? `$${parseFloat(item.totalAmount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD`
+                    : `${parseFloat(item.totalAmount).toLocaleString('en-US')} ETB`;
+
+                const badgeClass = isPaypal ? 'lb-amount-badge paypal' : 'lb-amount-badge';
+
+                html += `
+                    <div class="lb-row-item ${rankClass}">
+                        <div class="lb-row-left">
+                            <div class="lb-rank-badge">${rankBadge}</div>
+                            <span class="lb-donor-name" title="${escapeHtml(item.name)}">${escapeHtml(item.name)}</span>
+                        </div>
+                        <div class="${badgeClass}">${dispAmt}</div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function copyStudioLeaderboardLink() {
+            const url = document.getElementById('web-studio-link-display')?.textContent || 'http://127.0.0.1:3000/leaderboard';
+            navigator.clipboard.writeText(url);
+            alert('✅ Copied Studio Top 5 Overlay Link!\n\nPaste this URL into OBS Studio or TikTok LIVE Studio as a Browser Source:\n' + url);
+        }
+
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str || '';
+            return div.innerHTML;
         }
     </script>
 </body>

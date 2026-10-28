@@ -316,6 +316,10 @@
                         <img src="img/fastpay.png" alt="FastPay">
                         <div class="gw-name">FastPay</div>
                     </div>
+                    <div class="gw-option" id="gw-paypal">
+                        <img src="img/paypal.svg" alt="PayPal">
+                        <div class="gw-name">PayPal</div>
+                    </div>
                     <div class="gw-option coming-soon-gw" id="gw-cbe">
                         <span class="gw-cs-badge">Coming Soon</span>
                         <img src="img/cbe1.png" alt="CBE Bank">
@@ -346,8 +350,8 @@
 
             <!-- MODE 1: Normal Custom Donation Amount -->
             <div id="normal-amount-section" class="form-group">
-                <label><i class="fa-solid fa-coins"></i> Donation Amount (ETB)</label>
-                <div class="preset-chips" style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px;">
+                <label id="donation-amount-label"><i class="fa-solid fa-coins"></i> Donation Amount (ETB)</label>
+                <div class="preset-chips" id="preset-chips-container" style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px;">
                     <button type="button" class="preset-btn" data-amount="5" onclick="setDonationAmount(5)">5 ETB</button>
                     <button type="button" class="preset-btn" data-amount="25" onclick="setDonationAmount(25)">25 ETB</button>
                     <button type="button" class="preset-btn" data-amount="50" onclick="setDonationAmount(50)">50 ETB</button>
@@ -388,7 +392,8 @@
                 Your donation note for <strong id="step2-streamer-name" style="color: #00c6ff;">NATE PUBGM</strong> has been queued!
             </p>
 
-            <div class="bank-details" style="margin-top: 18px;">
+            <!-- Standard Bank Details (Telebirr / FastPay / CBE) -->
+            <div id="step2-bank-box" class="bank-details" style="margin-top: 18px;">
                 <div style="font-size: 13px; color: rgba(255,255,255,0.7); font-weight: 600; margin-bottom: 8px;">
                     Please send <span id="step2-amount" style="color: #ffc107; font-weight: 800; font-size: 16px;">500 ETB</span> to:
                 </div>
@@ -403,9 +408,27 @@
                 </div>
             </div>
 
-            <div class="ref-box" style="background: rgba(0, 230, 118, 0.1); border: 1px solid rgba(0, 230, 118, 0.3); border-radius: 14px; padding: 16px; margin-top: 18px;">
+            <!-- PayPal Dedicated Step 2 Box -->
+            <div id="step2-paypal-box" style="display: none; margin-top: 18px; background: rgba(0, 112, 186, 0.12); border: 1.5px solid rgba(0, 112, 186, 0.5); border-radius: 18px; padding: 18px; text-align: center;">
+                <div style="font-size: 15px; color: #fff; font-weight: 700; margin-bottom: 12px;">
+                    Send <span id="step2-paypal-amount" style="color: #00c6ff; font-weight: 900; font-size: 18px;">$5.00 USD</span> via PayPal:
+                </div>
+                <a id="step2-paypal-btn" href="https://paypal.me/Khaledmo10" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; background: linear-gradient(135deg, #0070ba, #003087); color: #fff; text-decoration: none; padding: 14px 20px; border-radius: 12px; font-weight: 900; font-size: 16px; box-shadow: 0 6px 20px rgba(0, 112, 186, 0.5); margin-bottom: 14px; transition: transform 0.2s ease;">
+                    <img src="img/paypal.svg" alt="PayPal" style="width: 24px; height: 24px;">
+                    <span>👉 Click to Pay via PayPal (@Khaledmo10)</span>
+                </a>
+                <div style="font-size: 11px; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">— OR SCAN WITH PAYPAL APP —</div>
+                <div style="background: #ffffff; padding: 10px; border-radius: 16px; display: inline-block; box-shadow: 0 4px 15px rgba(0,0,0,0.4); margin-bottom: 8px;">
+                    <img src="img/paypal_qr.png" alt="PayPal QR Code" style="width: 160px; height: 160px; object-fit: contain; display: block;">
+                </div>
+                <div style="font-size: 12px; color: rgba(255,255,255,0.8); margin-top: 4px;">
+                    Scan with your PayPal app or phone camera.
+                </div>
+            </div>
+
+            <div class="ref-box" id="step2-ref-box" style="background: rgba(0, 230, 118, 0.1); border: 1px solid rgba(0, 230, 118, 0.3); border-radius: 14px; padding: 16px; margin-top: 18px;">
                 <div style="font-size: 13px; color: #00e676; font-weight: 700; line-height: 1.5;">
-                    ⚡ Once you complete your payment via Telebirr, your alert & custom note message will automatically pop up live on stream!
+                    ⚡ Once you complete your payment, your alert & custom note message will automatically pop up live on stream!
                 </div>
             </div>
 
@@ -420,6 +443,7 @@
         const GATEWAYS = [
             { id: 'gw-telebirr', key: 'Telebirr', name: 'Telebirr', accProp: 'telebirrLocal', fullAccProp: 'telebirrAcc', label: 'Telebirr Phone' },
             { id: 'gw-fastpay', key: 'FastPay', name: 'FastPay', accProp: 'fastpayLocal', fullAccProp: 'fastpayAcc', label: 'FastPay Phone' },
+            { id: 'gw-paypal', key: 'PayPal', name: 'PayPal', accProp: 'paypalHandle', fullAccProp: 'paypalUrl', label: 'PayPal Handle' },
             { id: 'gw-cbe', key: 'CBE', name: 'CBE Bank', accProp: 'cbeAcc', fullAccProp: 'cbeAcc', label: 'CBE Account Number' },
             { id: 'gw-dashen', key: 'Dashen', name: 'Dashen Bank', accProp: 'dashenAcc', fullAccProp: 'dashenAcc', label: 'Dashen Account Number' },
             { id: 'gw-awash', key: 'Awash', name: 'Awash Bank', accProp: 'awashAcc', fullAccProp: 'awashAcc', label: 'Awash Account Number' },
@@ -466,7 +490,10 @@
                 telebirrLocal: '0942404335',
                 fastpayAcc: '+251942404335',
                 fastpayLocal: '0942404335',
-                allowedGateways: ['Telebirr', 'FastPay'],
+                paypalHandle: '@Khaledmo10',
+                paypalUrl: 'https://paypal.me/Khaledmo10',
+                paypalQr: 'img/paypal_qr.png',
+                allowedGateways: ['Telebirr', 'FastPay', 'PayPal'],
                 enableStickers: false
             }
         };
@@ -606,13 +633,14 @@
         }
 
         function checkNoteLockStatus() {
+            const isPaypal = selectedGw === 'PayPal';
             const amountInput = document.getElementById('donor-amount');
             const amount = parseFloat(amountInput?.value) || 0;
             const noteInput = document.getElementById('donor-note');
             const noteHint = document.getElementById('note-hint');
             if (!noteInput) return;
 
-            if (amount < 100) {
+            if (!isPaypal && amount < 100) {
                 noteInput.disabled = true;
                 noteInput.value = '';
                 noteInput.placeholder = '🔒 Note is locked for donations under 100 ETB (Donate 100 ETB or more to unlock custom note & GIF sticker!)';
@@ -625,7 +653,9 @@
                 }
             } else {
                 noteInput.disabled = false;
-                noteInput.placeholder = 'Write your custom note here (max 80 letters, English or Amharic)...';
+                noteInput.placeholder = isPaypal 
+                    ? 'Write your message to the streamer (max 80 letters, English or Amharic)...' 
+                    : 'Write your custom note here (max 80 letters, English or Amharic)...';
                 noteInput.style.opacity = '1';
                 noteInput.style.cursor = 'text';
                 noteInput.style.background = 'rgba(255, 255, 255, 0.05)';
@@ -701,6 +731,7 @@
         }
 
         function checkAmountTierUnlock() {
+            const isPaypal = selectedGw === 'PayPal';
             const amountInput = document.getElementById('donor-amount');
             const amount = parseFloat(amountInput?.value) || 0;
             const previewBox = document.getElementById('unlocked-sticker-preview-box');
@@ -722,7 +753,10 @@
                 }
             });
 
-            if (amount >= 100) {
+            if (isPaypal) {
+                if (previewBox) previewBox.style.display = 'none';
+                if (amountHint) amountHint.innerHTML = '🅿️ <strong style="color: #00c6ff;">PayPal Donation:</strong> Supports international cards & PayPal accounts. Custom note message & TTS voice active!';
+            } else if (amount >= 100) {
                 if (previewBox) {
                     previewBox.style.display = 'flex';
                     if (previewTitle) {
@@ -769,9 +803,48 @@
 
             const realnameLabel = document.getElementById('realname-label');
             const realnameHint = document.getElementById('realname-hint');
+            const amtLabel = document.getElementById('donation-amount-label');
+            const amtInput = document.getElementById('donor-amount');
+            const chipsBox = document.getElementById('preset-chips-container');
 
-            if (realnameLabel) realnameLabel.innerHTML = `<i class="fa-solid fa-id-card"></i> ${curGwObj.name} Account Full Name`;
-            if (realnameHint) realnameHint.textContent = `Must match your ${curGwObj.name} account full name for instant verification!`;
+            if (selectedGw === 'PayPal') {
+                if (realnameLabel) realnameLabel.innerHTML = `<i class="fa-solid fa-id-card"></i> PayPal Account / Full Name`;
+                if (realnameHint) realnameHint.textContent = `Enter your name or handle on PayPal in English.`;
+                if (amtLabel) amtLabel.innerHTML = `<i class="fa-solid fa-coins"></i> Donation Amount (USD $)`;
+                if (amtInput && (parseFloat(amtInput.value) > 100 || parseFloat(amtInput.value) < 1)) {
+                    amtInput.value = 5;
+                }
+                if (chipsBox) {
+                    chipsBox.innerHTML = `
+                        <button type="button" class="preset-btn" data-amount="1" onclick="setDonationAmount(1)">$1 USD</button>
+                        <button type="button" class="preset-btn" data-amount="3" onclick="setDonationAmount(3)">$3 USD</button>
+                        <button type="button" class="preset-btn active" data-amount="5" onclick="setDonationAmount(5)">$5 USD</button>
+                        <button type="button" class="preset-btn" data-amount="10" onclick="setDonationAmount(10)">$10 USD</button>
+                        <button type="button" class="preset-btn" data-amount="20" onclick="setDonationAmount(20)">$20 USD</button>
+                        <button type="button" class="preset-btn" data-amount="50" onclick="setDonationAmount(50)">$50 USD</button>
+                        <button type="button" class="preset-btn" data-amount="100" onclick="setDonationAmount(100)">$100 USD</button>
+                    `;
+                }
+            } else {
+                if (realnameLabel) realnameLabel.innerHTML = `<i class="fa-solid fa-id-card"></i> ${curGwObj.name} Account Full Name`;
+                if (realnameHint) realnameHint.textContent = `Must match your ${curGwObj.name} account full name for instant verification!`;
+                if (amtLabel) amtLabel.innerHTML = `<i class="fa-solid fa-coins"></i> Donation Amount (ETB)`;
+                if (amtInput && parseFloat(amtInput.value) <= 1) {
+                    amtInput.value = 25;
+                }
+                if (chipsBox) {
+                    chipsBox.innerHTML = `
+                        <button type="button" class="preset-btn" data-amount="5" onclick="setDonationAmount(5)">5 ETB</button>
+                        <button type="button" class="preset-btn active" data-amount="25" onclick="setDonationAmount(25)">25 ETB</button>
+                        <button type="button" class="preset-btn" data-amount="50" onclick="setDonationAmount(50)">50 ETB</button>
+                        <button type="button" class="preset-btn preset-gif-btn" data-amount="100" onclick="setDonationAmount(100)">100 ETB 🌟 (GIF Sticker 100+ ETB)</button>
+                        <button type="button" class="preset-btn" data-amount="500" onclick="setDonationAmount(500)">500 ETB</button>
+                        <button type="button" class="preset-btn" data-amount="1000" onclick="setDonationAmount(1000)">1000 ETB</button>
+                    `;
+                }
+            }
+
+            checkAmountTierUnlock();
         }
 
         function showError(msg) {
@@ -856,12 +929,13 @@
                 return;
             }
 
-            let finalAmount = parseFloat(document.getElementById('donor-amount').value) || 25;
-            let finalNote = finalAmount >= 100 ? note : '';
-            let finalStickerId = finalAmount >= 100 ? 'gif1' : '';
+            const isPaypal = selectedGw === 'PayPal';
+            let finalAmount = parseFloat(document.getElementById('donor-amount').value) || (isPaypal ? 5 : 25);
+            let finalNote = isPaypal ? note : (finalAmount >= 100 ? note : '');
+            let finalStickerId = (!isPaypal && finalAmount >= 100) ? 'gif1' : '';
 
             if (isNaN(finalAmount) || finalAmount < 1) {
-                showError('❌ Please enter a valid donation amount (minimum 1 ETB).');
+                showError(isPaypal ? '❌ Please enter a valid donation amount (minimum $1 USD).' : '❌ Please enter a valid donation amount (minimum 1 ETB).');
                 return;
             }
 
@@ -869,18 +943,18 @@
             const accountNumber = activeStreamer[gwObj.fullAccProp] || activeStreamer[gwObj.accProp] || activeStreamer.telebirrAcc;
 
             if (!realName) {
-                showError('❌ Please enter your ' + gwObj.name + ' account full name.');
+                showError('❌ Please enter your ' + gwObj.name + ' account name.');
                 return;
             }
 
             const englishRegex = /^[a-zA-Z\s\.\'-]+$/;
             if (!englishRegex.test(realName)) {
-                showError('❌ Real account full name must be written in English letters only (e.g. Robel Hiluf).');
+                showError('❌ Account name must be written in English letters only (e.g. Robel Hiluf or John Miller).');
                 return;
             }
 
             const words = realName.split(/\s+/).filter(Boolean);
-            if (realName.length < 5 || words.length < 2) {
+            if (!isPaypal && (realName.length < 5 || words.length < 2)) {
                 showError('❌ Please enter your full real name including your father\'s name in English (e.g. Robel Hiluf).');
                 return;
             }
@@ -891,6 +965,7 @@
                 amount: finalAmount, 
                 note: finalNote, 
                 gateway: selectedGw,
+                currency: isPaypal ? 'USD' : 'ETB',
                 accountNumber,
                 streamerName: activeStreamer.name,
                 streamerId: activeStreamer.id,
@@ -958,31 +1033,59 @@
             document.getElementById('payment-step2').style.display = 'block';
             window.scrollTo({ top: 0, behavior: 'smooth' });
 
+            const isPaypal = pending.gateway === 'PayPal';
+            const bankBox = document.getElementById('step2-bank-box');
+            const paypalBox = document.getElementById('step2-paypal-box');
+            const refBox = document.getElementById('step2-ref-box');
+
             document.getElementById('step2-streamer-name').textContent = activeStreamer.name;
-            document.getElementById('step2-amount').textContent = pending.amount + ' ETB';
 
-            const stkSummaryBox = document.getElementById('step2-sticker-summary');
-            const stkId = pending.stickerId || (pending.amount >= 100 ? 'gif1' : '');
-
-            if (stkId === 'gif1') {
-                if (stkSummaryBox) stkSummaryBox.style.display = 'flex';
-                const stkVid = document.getElementById('step2-sticker-video');
-                const stkName = document.getElementById('step2-sticker-name');
-                if (stkVid) stkVid.src = STICKER_VIDEOS['gif1'];
-                if (stkName) stkName.textContent = '100 ETB Playable Sticker (GIF #1)';
+            if (isPaypal) {
+                if (bankBox) bankBox.style.display = 'none';
+                if (paypalBox) paypalBox.style.display = 'block';
+                const paypalAmtEl = document.getElementById('step2-paypal-amount');
+                if (paypalAmtEl) paypalAmtEl.textContent = `$${pending.amount}.00 USD`;
+                const paypalBtn = document.getElementById('step2-paypal-btn');
+                if (paypalBtn) {
+                    const payUrl = `${activeStreamer.paypalUrl || 'https://paypal.me/Khaledmo10'}/${pending.amount}USD`;
+                    paypalBtn.href = payUrl;
+                    paypalBtn.innerHTML = `<img src="img/paypal.svg" alt="PayPal" style="width: 24px; height: 24px;"><span>👉 Click to Pay $${pending.amount} via PayPal (@Khaledmo10)</span>`;
+                }
+                if (refBox) {
+                    refBox.innerHTML = `
+                        <div style="font-size: 13px; color: #00c6ff; font-weight: 700; line-height: 1.5;">
+                            ⚡ Once you complete payment on PayPal, your alert & custom note will pop up on the live stream!
+                        </div>
+                    `;
+                }
             } else {
-                if (stkSummaryBox) stkSummaryBox.style.display = 'none';
+                if (bankBox) bankBox.style.display = 'block';
+                if (paypalBox) paypalBox.style.display = 'none';
+                document.getElementById('step2-amount').textContent = pending.amount + ' ETB';
+
+                const stkSummaryBox = document.getElementById('step2-sticker-summary');
+                const stkId = pending.stickerId || (pending.amount >= 100 ? 'gif1' : '');
+
+                if (stkId === 'gif1') {
+                    if (stkSummaryBox) stkSummaryBox.style.display = 'flex';
+                    const stkVid = document.getElementById('step2-sticker-video');
+                    const stkName = document.getElementById('step2-sticker-name');
+                    if (stkVid) stkVid.src = STICKER_VIDEOS['gif1'];
+                    if (stkName) stkName.textContent = '100 ETB Playable Sticker (GIF #1)';
+                } else {
+                    if (stkSummaryBox) stkSummaryBox.style.display = 'none';
+                }
+
+                const recHolder = document.getElementById('receiver-holder');
+                const recLabel = document.getElementById('receiver-label');
+                const recNum = document.getElementById('receiver-number');
+
+                recHolder.textContent = activeStreamer.holderName;
+
+                const gwObj = GATEWAYS.find(g => g.key === pending.gateway) || GATEWAYS[0];
+                recLabel.textContent = `${gwObj.label}:`;
+                recNum.textContent = activeStreamer[gwObj.accProp] || activeStreamer.telebirrLocal;
             }
-
-            const recHolder = document.getElementById('receiver-holder');
-            const recLabel = document.getElementById('receiver-label');
-            const recNum = document.getElementById('receiver-number');
-
-            recHolder.textContent = activeStreamer.holderName;
-
-            const gwObj = GATEWAYS.find(g => g.key === pending.gateway) || GATEWAYS[0];
-            recLabel.textContent = `${gwObj.label}:`;
-            recNum.textContent = activeStreamer[gwObj.accProp] || activeStreamer.telebirrLocal;
         }
 
         function copyReceiverNumber() {

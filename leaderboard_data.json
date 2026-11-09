@@ -1,12 +1,120 @@
 {
+  "gatewayFocus": "Telebirr",
+  "paypalOnHold": true,
+  "settings": {
+    "design": "cyber_hud",
+    "weeklyResetDay": 1,
+    "weeklyResetDayName": "Monday",
+    "manualWeeklyResetAt": null,
+    "limit": 5
+  },
+  "periods": {
+    "daily": {
+      "items": [],
+      "totalEtb": 0,
+      "donorCount": 0,
+      "txCount": 0,
+      "periodStartMs": 1794171600000,
+      "nextResetMs": 1794258000000,
+      "dateKey": "2026-11-09"
+    },
+    "weekly": {
+      "items": [],
+      "totalEtb": 0,
+      "donorCount": 0,
+      "txCount": 0,
+      "periodStartMs": 1794171600000,
+      "autoPeriodStartMs": 1794171600000,
+      "nextResetMs": 1794776400000,
+      "weekKey": "2026-11-09",
+      "resetDayName": "Monday"
+    },
+    "alltime": {
+      "items": [
+        {
+          "rank": 1,
+          "name": "ኔት ተበዳ",
+          "isAnonymous": false,
+          "totalAmount": 100,
+          "formattedAmount": "100",
+          "currency": "ETB",
+          "count": 1,
+          "lastDonation": "2026-10-28T18:24:04.272Z"
+        },
+        {
+          "rank": 2,
+          "name": "Rubem",
+          "isAnonymous": false,
+          "totalAmount": 15,
+          "formattedAmount": "15",
+          "currency": "ETB",
+          "count": 3,
+          "lastDonation": "2026-10-28T20:18:22.597Z"
+        },
+        {
+          "rank": 3,
+          "name": "Robel Hiluf",
+          "isAnonymous": false,
+          "totalAmount": 1,
+          "formattedAmount": "1",
+          "currency": "ETB",
+          "count": 1,
+          "lastDonation": "2026-10-28T20:19:49.884Z"
+        }
+      ],
+      "totalEtb": 116,
+      "donorCount": 3,
+      "txCount": 5
+    }
+  },
+  "daily": [],
+  "weekly": [],
+  "alltime": [
+    {
+      "rank": 1,
+      "name": "ኔት ተበዳ",
+      "isAnonymous": false,
+      "totalAmount": 100,
+      "formattedAmount": "100",
+      "currency": "ETB",
+      "count": 1,
+      "lastDonation": "2026-10-28T18:24:04.272Z"
+    },
+    {
+      "rank": 2,
+      "name": "Rubem",
+      "isAnonymous": false,
+      "totalAmount": 15,
+      "formattedAmount": "15",
+      "currency": "ETB",
+      "count": 3,
+      "lastDonation": "2026-10-28T20:18:22.597Z"
+    },
+    {
+      "rank": 3,
+      "name": "Robel Hiluf",
+      "isAnonymous": false,
+      "totalAmount": 1,
+      "formattedAmount": "1",
+      "currency": "ETB",
+      "count": 1,
+      "lastDonation": "2026-10-28T20:19:49.884Z"
+    }
+  ],
   "etb": [],
   "paypal": [],
   "stats": {
-    "totalEtb": 0,
+    "dailyTotalEtb": 0,
+    "weeklyTotalEtb": 0,
+    "alltimeTotalEtb": 116,
+    "totalEtb": 116,
     "totalUsd": 0,
-    "donorCountEtb": 0,
+    "dailyDonorCount": 0,
+    "weeklyDonorCount": 0,
+    "alltimeDonorCount": 3,
+    "donorCountEtb": 3,
     "donorCountUsd": 0,
-    "genuineTxCount": 0
+    "genuineTxCount": 5
   },
-  "timestamp": "2026-10-28T17:43:04.507Z"
+  "timestamp": "2026-11-09T09:20:05.943Z"
 }

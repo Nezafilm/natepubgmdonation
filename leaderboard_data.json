@@ -30,97 +30,29 @@
       "resetDayName": "Monday"
     },
     "alltime": {
-      "items": [
-        {
-          "rank": 1,
-          "name": "ኔት ተበዳ",
-          "isAnonymous": false,
-          "totalAmount": 100,
-          "formattedAmount": "100",
-          "currency": "ETB",
-          "count": 1,
-          "latestNote": "አሳ ሲሸትህ ምን ትዝ ይልሀል?",
-          "lastDonation": "2026-10-28T18:24:04.272Z"
-        },
-        {
-          "rank": 2,
-          "name": "Rubem",
-          "isAnonymous": false,
-          "totalAmount": 15,
-          "formattedAmount": "15",
-          "currency": "ETB",
-          "count": 3,
-          "latestNote": "",
-          "lastDonation": "2026-10-28T20:18:22.597Z"
-        },
-        {
-          "rank": 3,
-          "name": "Robel Hiluf",
-          "isAnonymous": false,
-          "totalAmount": 1,
-          "formattedAmount": "1",
-          "currency": "ETB",
-          "count": 1,
-          "latestNote": "",
-          "lastDonation": "2026-10-28T20:19:49.884Z"
-        }
-      ],
-      "totalEtb": 116,
-      "donorCount": 3,
-      "txCount": 5
+      "items": [],
+      "totalEtb": 0,
+      "donorCount": 0,
+      "txCount": 0
     }
   },
   "daily": [],
   "weekly": [],
-  "alltime": [
-    {
-      "rank": 1,
-      "name": "ኔት ተበዳ",
-      "isAnonymous": false,
-      "totalAmount": 100,
-      "formattedAmount": "100",
-      "currency": "ETB",
-      "count": 1,
-      "latestNote": "አሳ ሲሸትህ ምን ትዝ ይልሀል?",
-      "lastDonation": "2026-10-28T18:24:04.272Z"
-    },
-    {
-      "rank": 2,
-      "name": "Rubem",
-      "isAnonymous": false,
-      "totalAmount": 15,
-      "formattedAmount": "15",
-      "currency": "ETB",
-      "count": 3,
-      "latestNote": "",
-      "lastDonation": "2026-10-28T20:18:22.597Z"
-    },
-    {
-      "rank": 3,
-      "name": "Robel Hiluf",
-      "isAnonymous": false,
-      "totalAmount": 1,
-      "formattedAmount": "1",
-      "currency": "ETB",
-      "count": 1,
-      "latestNote": "",
-      "lastDonation": "2026-10-28T20:19:49.884Z"
-    }
-  ],
+  "alltime": [],
   "etb": [],
   "paypal": [],
   "stats": {
     "dailyTotalEtb": 0,
     "weeklyTotalEtb": 0,
-    "alltimeTotalEtb": 116,
-    "totalEtb": 116,
+    "alltimeTotalEtb": 0,
+    "totalEtb": 0,
     "totalUsd": 0,
     "dailyDonorCount": 0,
     "weeklyDonorCount": 0,
-    "alltimeDonorCount": 3,
-    "donorCountEtb": 3,
+    "alltimeDonorCount": 0,
+    "donorCountEtb": 0,
     "donorCountUsd": 0,
-    "genuineTxCount": 5
+    "genuineTxCount": 0
   },
-  "timestamp": "2026-11-09T10:03:48.726Z"
+  "timestamp": "2026-11-09T10:18:49.808Z"
 }

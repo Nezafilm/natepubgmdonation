@@ -808,16 +808,16 @@
                 <div class="lb-header-title">
                     <img class="lb-crown-emblem" src="img/leaderboard/pedestal-crown.png" alt="Crown Pedestal">
                     <div>
-                        <h3><span class="lb-title-gold">DONATION</span> LEADERBOARD</h3>
-                        <p id="web-lb-subtitle">Genuine ETB donations · Weekly resets every Monday</p>
+                        <h3 id="web-lb-heading"><span class="lb-title-gold">WEEKLY</span> LEADERBOARD</h3>
+                        <p id="web-lb-subtitle">Genuine Telebirr SMS · Weekly resets every Monday</p>
                     </div>
                 </div>
                 <div class="lb-top-supporters-pill">
                     <svg width="16" height="16" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M31.5 18C26 9 14 7 13 14.5C12 20.5 24 20.5 31.5 18Z" fill="#FFD24C"/><path d="M32.5 18C38 9 50 7 51 14.5C52 20.5 40 20.5 32.5 18Z" fill="#FFD24C"/><rect x="8" y="18" width="48" height="11" rx="3.5" fill="#FFCA38"/><path d="M12 31H52V51.5C52 54.5 49.5 57 46.5 57H17.5C14.5 57 12 54.5 12 51.5V31Z" fill="#FFD24C"/><rect x="29.5" y="18" width="5" height="39" fill="#3B2104"/><rect x="8" y="28.5" width="48" height="3" fill="#3B2104"/></svg>
-                    <span>Top <strong style="color:#ffd966;">Supporters</strong></span>
+                    <span id="web-lb-pill-label">Weekly <strong style="color:#ffd966;">Top 5</strong></span>
                 </div>
             </div>
-            <!-- Period Tabs: Weekly (default) / Daily / All-Time -->
+            <!-- Period Tabs: Weekly (default) / Daily / Top All-Time -->
             <div class="lb-tabs-nav">
                 <button type="button" class="lb-tab-btn active" id="lb-tab-weekly" onclick="switchWebLbTab('weekly')">
                     <span>📆 Weekly</span>
@@ -826,7 +826,7 @@
                     <span>📅 Daily</span>
                 </button>
                 <button type="button" class="lb-tab-btn" id="lb-tab-alltime" onclick="switchWebLbTab('alltime')">
-                    <span>👑 All-Time</span>
+                    <span>👑 Top All-Time</span>
                 </button>
             </div>
         </div>
@@ -1636,17 +1636,30 @@
             if (!Array.isArray(history)) return;
             const eatInfo = getEthiopiaTimeInfo(1);
             const genuine = history.filter(d => {
-                if (!d || d.isTest) return false;
+                if (!d || d.isTest || d.isManual) return false;
                 const tx = String(d.txId || '');
-                if (tx.startsWith('TEST_') || tx.toUpperCase().includes('TEST')) return false;
+                if (!tx || tx.startsWith('TEST_') || tx.startsWith('WEB_CONFIRMED_') || tx.toUpperCase().includes('TEST')) return false;
                 const raw = String(d.rawBody || '').toLowerCase();
                 if (
+                    !raw ||
                     raw.includes('simulated') ||
+                    raw.includes('test stream donation') ||
+                    raw.includes('manual verified web submission') ||
                     raw.includes('insufficient balance') ||
                     raw.includes('paid a credit') ||
                     raw.includes('successfully paid') ||
-                    raw.includes('outstanding credit')
+                    raw.includes('you have paid') ||
+                    raw.includes('outstanding credit') ||
+                    raw.includes('deposit additional') ||
+                    raw.includes('transferred') ||
+                    raw.includes('debited') ||
+                    raw.includes('airtime') ||
+                    raw.includes('loan') ||
+                    raw.includes('debt')
                 ) return false;
+                const hasTelebirr = raw.includes('telebirr') || raw.includes('e-money') || raw.includes('ethio telecom') || raw.includes('127');
+                const hasIncoming = raw.includes('received') || raw.includes('credited');
+                if (!hasTelebirr || !hasIncoming) return false;
                 const gw = String(d.gateway || '').toLowerCase();
                 const cur = String(d.currency || '').toUpperCase();
                 if (!gw.includes('telebirr') || cur === 'USD') return false;
@@ -1755,18 +1768,24 @@
             const topContributorEl = document.getElementById('lb-top-contributor');
             const supporterCountEl = document.getElementById('lb-supporter-count');
             const footerTotalEl = document.getElementById('lb-footer-total');
+            const headingEl = document.getElementById('web-lb-heading');
+            const pillLabelEl = document.getElementById('web-lb-pill-label');
             const subtitleEl = document.getElementById('web-lb-subtitle');
             if (!container) return;
 
             const resetDayName = (webLeaderboardData.settings && webLeaderboardData.settings.weeklyResetDayName) || 'Monday';
-            if (subtitleEl) {
-                if (activeWebLbTab === 'daily') {
-                    subtitleEl.textContent = "Today's Telebirr supporters · Resets Midnight EAT";
-                } else if (activeWebLbTab === 'alltime') {
-                    subtitleEl.textContent = 'All-Time genuine Telebirr Hall of Fame';
-                } else {
-                    subtitleEl.textContent = `Weekly Telebirr race · Auto-resets every ${resetDayName}`;
-                }
+            if (activeWebLbTab === 'daily') {
+                if (headingEl) headingEl.innerHTML = '<span class="lb-title-gold">DAILY</span> LEADERBOARD';
+                if (pillLabelEl) pillLabelEl.innerHTML = 'Daily <strong style="color:#ffd966;">Top 5</strong>';
+                if (subtitleEl) subtitleEl.textContent = "Today's Telebirr supporters · Resets Midnight EAT";
+            } else if (activeWebLbTab === 'alltime') {
+                if (headingEl) headingEl.innerHTML = '<span class="lb-title-gold">TOP ALL-TIME</span> LEADERBOARD';
+                if (pillLabelEl) pillLabelEl.innerHTML = 'Top <strong style="color:#ffd966;">All-Time</strong>';
+                if (subtitleEl) subtitleEl.textContent = 'All-Time genuine Telebirr Hall of Fame';
+            } else {
+                if (headingEl) headingEl.innerHTML = '<span class="lb-title-gold">WEEKLY</span> LEADERBOARD';
+                if (pillLabelEl) pillLabelEl.innerHTML = 'Weekly <strong style="color:#ffd966;">Top 5</strong>';
+                if (subtitleEl) subtitleEl.textContent = `Weekly Telebirr race · Auto-resets every ${resetDayName}`;
             }
 
             const periods = webLeaderboardData.periods || {};
@@ -1800,11 +1819,11 @@
 
             if (list.length === 0) {
                 const emptyTitle = activeWebLbTab === 'daily'
-                    ? "No Telebirr Donations Yet Today"
-                    : (activeWebLbTab === 'alltime' ? 'No Telebirr Donations Yet' : 'No Telebirr Donations This Week Yet');
+                    ? 'No Donations Yet Today'
+                    : (activeWebLbTab === 'alltime' ? 'No All-Time Donations Yet' : 'No Donations This Week Yet');
                 const emptySub = activeWebLbTab === 'weekly'
-                    ? `Weekly leaderboard resets every ${resetDayName}. Be the first to take #1 this week!`
-                    : 'Be the first supporter to donate via Telebirr and claim the #1 spot on stream!';
+                    ? `Counts genuine incoming Telebirr SMS automatically · Resets every ${resetDayName}`
+                    : 'Counts genuine incoming Telebirr SMS automatically as supporters donate!';
                 container.innerHTML = `
                     <div style="text-align: center; padding: 24px 16px; background: rgba(255,208,92,0.03); border: 1px dashed rgba(255,208,92,0.22); border-radius: 14px;">
                         <div style="font-size: 28px; margin-bottom: 6px;">👑</div>

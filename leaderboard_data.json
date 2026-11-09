@@ -2,7 +2,7 @@
   "gatewayFocus": "Telebirr",
   "paypalOnHold": true,
   "settings": {
-    "design": "cyber_hud",
+    "design": "royal_gold",
     "weeklyResetDay": 1,
     "weeklyResetDayName": "Monday",
     "manualWeeklyResetAt": null,
@@ -39,6 +39,7 @@
           "formattedAmount": "100",
           "currency": "ETB",
           "count": 1,
+          "latestNote": "አሳ ሲሸትህ ምን ትዝ ይልሀል?",
           "lastDonation": "2026-10-28T18:24:04.272Z"
         },
         {
@@ -49,6 +50,7 @@
           "formattedAmount": "15",
           "currency": "ETB",
           "count": 3,
+          "latestNote": "",
           "lastDonation": "2026-10-28T20:18:22.597Z"
         },
         {
@@ -59,6 +61,7 @@
           "formattedAmount": "1",
           "currency": "ETB",
           "count": 1,
+          "latestNote": "",
           "lastDonation": "2026-10-28T20:19:49.884Z"
         }
       ],
@@ -78,6 +81,7 @@
       "formattedAmount": "100",
       "currency": "ETB",
       "count": 1,
+      "latestNote": "አሳ ሲሸትህ ምን ትዝ ይልሀል?",
       "lastDonation": "2026-10-28T18:24:04.272Z"
     },
     {
@@ -88,6 +92,7 @@
       "formattedAmount": "15",
       "currency": "ETB",
       "count": 3,
+      "latestNote": "",
       "lastDonation": "2026-10-28T20:18:22.597Z"
     },
     {
@@ -98,6 +103,7 @@
       "formattedAmount": "1",
       "currency": "ETB",
       "count": 1,
+      "latestNote": "",
       "lastDonation": "2026-10-28T20:19:49.884Z"
     }
   ],
@@ -116,5 +122,5 @@
     "donorCountUsd": 0,
     "genuineTxCount": 5
   },
-  "timestamp": "2026-11-09T09:31:16.304Z"
+  "timestamp": "2026-11-09T10:00:34.972Z"
 }

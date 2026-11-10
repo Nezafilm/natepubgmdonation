@@ -14,15 +14,38 @@
       "totalEtb": 0,
       "donorCount": 0,
       "txCount": 0,
-      "periodStartMs": 1794171600000,
-      "nextResetMs": 1794258000000,
-      "dateKey": "2026-11-09"
+      "periodStartMs": 1794258000000,
+      "nextResetMs": 1794344400000,
+      "dateKey": "2026-11-10"
     },
     "weekly": {
-      "items": [],
-      "totalEtb": 0,
-      "donorCount": 0,
-      "txCount": 0,
+      "items": [
+        {
+          "rank": 1,
+          "name": "RUBEM",
+          "isAnonymous": false,
+          "totalAmount": 100,
+          "formattedAmount": "100",
+          "currency": "ETB",
+          "count": 1,
+          "latestNote": "ልንጭህ ኔት",
+          "lastDonation": "2026-11-09T17:32:21.122Z"
+        },
+        {
+          "rank": 2,
+          "name": "Xhunter ye nate",
+          "isAnonymous": false,
+          "totalAmount": 5,
+          "formattedAmount": "5",
+          "currency": "ETB",
+          "count": 1,
+          "latestNote": "",
+          "lastDonation": "2026-11-09T16:43:38.162Z"
+        }
+      ],
+      "totalEtb": 105,
+      "donorCount": 2,
+      "txCount": 2,
       "periodStartMs": 1794171600000,
       "autoPeriodStartMs": 1794171600000,
       "nextResetMs": 1794776400000,
@@ -30,29 +53,121 @@
       "resetDayName": "Monday"
     },
     "alltime": {
-      "items": [],
-      "totalEtb": 0,
-      "donorCount": 0,
-      "txCount": 0
+      "items": [
+        {
+          "rank": 1,
+          "name": "RUBEM",
+          "isAnonymous": false,
+          "totalAmount": 100,
+          "formattedAmount": "100",
+          "currency": "ETB",
+          "count": 1,
+          "latestNote": "ልንጭህ ኔት",
+          "lastDonation": "2026-11-09T17:32:21.122Z"
+        },
+        {
+          "rank": 2,
+          "name": "Xhunter ye nate",
+          "isAnonymous": false,
+          "totalAmount": 5,
+          "formattedAmount": "5",
+          "currency": "ETB",
+          "count": 1,
+          "latestNote": "",
+          "lastDonation": "2026-11-09T16:43:38.162Z"
+        }
+      ],
+      "totalEtb": 105,
+      "donorCount": 2,
+      "txCount": 2
     }
   },
   "daily": [],
-  "weekly": [],
-  "alltime": [],
-  "etb": [],
+  "weekly": [
+    {
+      "rank": 1,
+      "name": "RUBEM",
+      "isAnonymous": false,
+      "totalAmount": 100,
+      "formattedAmount": "100",
+      "currency": "ETB",
+      "count": 1,
+      "latestNote": "ልንጭህ ኔት",
+      "lastDonation": "2026-11-09T17:32:21.122Z"
+    },
+    {
+      "rank": 2,
+      "name": "Xhunter ye nate",
+      "isAnonymous": false,
+      "totalAmount": 5,
+      "formattedAmount": "5",
+      "currency": "ETB",
+      "count": 1,
+      "latestNote": "",
+      "lastDonation": "2026-11-09T16:43:38.162Z"
+    }
+  ],
+  "alltime": [
+    {
+      "rank": 1,
+      "name": "RUBEM",
+      "isAnonymous": false,
+      "totalAmount": 100,
+      "formattedAmount": "100",
+      "currency": "ETB",
+      "count": 1,
+      "latestNote": "ልንጭህ ኔት",
+      "lastDonation": "2026-11-09T17:32:21.122Z"
+    },
+    {
+      "rank": 2,
+      "name": "Xhunter ye nate",
+      "isAnonymous": false,
+      "totalAmount": 5,
+      "formattedAmount": "5",
+      "currency": "ETB",
+      "count": 1,
+      "latestNote": "",
+      "lastDonation": "2026-11-09T16:43:38.162Z"
+    }
+  ],
+  "etb": [
+    {
+      "rank": 1,
+      "name": "RUBEM",
+      "isAnonymous": false,
+      "totalAmount": 100,
+      "formattedAmount": "100",
+      "currency": "ETB",
+      "count": 1,
+      "latestNote": "ልንጭህ ኔት",
+      "lastDonation": "2026-11-09T17:32:21.122Z"
+    },
+    {
+      "rank": 2,
+      "name": "Xhunter ye nate",
+      "isAnonymous": false,
+      "totalAmount": 5,
+      "formattedAmount": "5",
+      "currency": "ETB",
+      "count": 1,
+      "latestNote": "",
+      "lastDonation": "2026-11-09T16:43:38.162Z"
+    }
+  ],
   "paypal": [],
   "stats": {
     "dailyTotalEtb": 0,
-    "weeklyTotalEtb": 0,
-    "alltimeTotalEtb": 0,
-    "totalEtb": 0,
+    "weeklyTotalEtb": 105,
+    "alltimeTotalEtb": 105,
+    "totalEtb": 105,
     "totalUsd": 0,
     "dailyDonorCount": 0,
-    "weeklyDonorCount": 0,
-    "alltimeDonorCount": 0,
-    "donorCountEtb": 0,
+    "weeklyDonorCount": 2,
+    "alltimeDonorCount": 2,
+    "donorCountEtb": 2,
     "donorCountUsd": 0,
-    "genuineTxCount": 0
+    "genuineTxCount": 2
   },
-  "timestamp": "2026-11-09T16:16:55.617Z"
+  "timestamp": "2026-11-10T15:56:49.394Z"
 }

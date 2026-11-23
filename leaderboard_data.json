@@ -14,48 +14,36 @@
       "totalEtb": 0,
       "donorCount": 0,
       "txCount": 0,
-      "periodStartMs": 1795294800000,
-      "nextResetMs": 1795381200000,
-      "dateKey": "2026-11-22"
+      "periodStartMs": 1795381200000,
+      "nextResetMs": 1795467600000,
+      "dateKey": "2026-11-23"
     },
     "weekly": {
-      "items": [
-        {
-          "rank": 1,
-          "name": "ሉሲያን ብድት",
-          "isAnonymous": false,
-          "totalAmount": 5,
-          "formattedAmount": "5",
-          "currency": "ETB",
-          "count": 1,
-          "latestNote": "",
-          "lastDonation": "2026-11-19T16:13:35.023Z"
-        },
-        {
-          "rank": 2,
-          "name": "Lucia baby",
-          "isAnonymous": false,
-          "totalAmount": 5,
-          "formattedAmount": "5",
-          "currency": "ETB",
-          "count": 1,
-          "latestNote": "",
-          "lastDonation": "2026-11-19T16:09:45.258Z"
-        }
-      ],
-      "totalEtb": 10,
-      "donorCount": 2,
-      "txCount": 2,
-      "periodStartMs": 1794776400000,
-      "autoPeriodStartMs": 1794776400000,
-      "nextResetMs": 1795381200000,
-      "weekKey": "2026-11-16",
+      "items": [],
+      "totalEtb": 0,
+      "donorCount": 0,
+      "txCount": 0,
+      "periodStartMs": 1795381200000,
+      "autoPeriodStartMs": 1795381200000,
+      "nextResetMs": 1795986000000,
+      "weekKey": "2026-11-23",
       "resetDayName": "Monday"
     },
     "alltime": {
       "items": [
         {
           "rank": 1,
+          "name": "Hirut Yilma",
+          "isAnonymous": false,
+          "totalAmount": 5000,
+          "formattedAmount": "5,000",
+          "currency": "ETB",
+          "count": 1,
+          "latestNote": "",
+          "lastDonation": "2026-11-22T17:43:29.717Z"
+        },
+        {
+          "rank": 2,
           "name": "Dibea",
           "isAnonymous": false,
           "totalAmount": 1000,
@@ -66,7 +54,7 @@
           "lastDonation": "2026-11-13T18:48:11.616Z"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "name": "Juntaw",
           "isAnonymous": false,
           "totalAmount": 700,
@@ -77,7 +65,7 @@
           "lastDonation": "2026-11-14T19:29:38.867Z"
         },
         {
-          "rank": 3,
+          "rank": 4,
           "name": "Khalid GUNNERS",
           "isAnonymous": false,
           "totalAmount": 100,
@@ -88,7 +76,7 @@
           "lastDonation": "2026-11-11T17:29:18.998Z"
         },
         {
-          "rank": 4,
+          "rank": 5,
           "name": "Israel Alem",
           "isAnonymous": false,
           "totalAmount": 100,
@@ -99,7 +87,7 @@
           "lastDonation": "2026-11-10T19:04:04.717Z"
         },
         {
-          "rank": 5,
+          "rank": 6,
           "name": "RUBEM",
           "isAnonymous": false,
           "totalAmount": 100,
@@ -110,7 +98,7 @@
           "lastDonation": "2026-11-09T17:32:21.122Z"
         },
         {
-          "rank": 6,
+          "rank": 7,
           "name": "Bela",
           "isAnonymous": false,
           "totalAmount": 25,
@@ -121,7 +109,7 @@
           "lastDonation": "2026-11-10T17:09:19.247Z"
         },
         {
-          "rank": 7,
+          "rank": 8,
           "name": "ሉሲያን ብድት",
           "isAnonymous": false,
           "totalAmount": 5,
@@ -132,7 +120,7 @@
           "lastDonation": "2026-11-19T16:13:35.023Z"
         },
         {
-          "rank": 8,
+          "rank": 9,
           "name": "Lucia baby",
           "isAnonymous": false,
           "totalAmount": 5,
@@ -143,7 +131,7 @@
           "lastDonation": "2026-11-19T16:09:45.258Z"
         },
         {
-          "rank": 9,
+          "rank": 10,
           "name": "Xhunter ye nate",
           "isAnonymous": false,
           "totalAmount": 5,
@@ -154,39 +142,27 @@
           "lastDonation": "2026-11-09T16:43:38.162Z"
         }
       ],
-      "totalEtb": 2040,
-      "donorCount": 9,
-      "txCount": 15
+      "totalEtb": 7040,
+      "donorCount": 10,
+      "txCount": 16
     }
   },
   "daily": [],
-  "weekly": [
-    {
-      "rank": 1,
-      "name": "ሉሲያን ብድት",
-      "isAnonymous": false,
-      "totalAmount": 5,
-      "formattedAmount": "5",
-      "currency": "ETB",
-      "count": 1,
-      "latestNote": "",
-      "lastDonation": "2026-11-19T16:13:35.023Z"
-    },
-    {
-      "rank": 2,
-      "name": "Lucia baby",
-      "isAnonymous": false,
-      "totalAmount": 5,
-      "formattedAmount": "5",
-      "currency": "ETB",
-      "count": 1,
-      "latestNote": "",
-      "lastDonation": "2026-11-19T16:09:45.258Z"
-    }
-  ],
+  "weekly": [],
   "alltime": [
     {
       "rank": 1,
+      "name": "Hirut Yilma",
+      "isAnonymous": false,
+      "totalAmount": 5000,
+      "formattedAmount": "5,000",
+      "currency": "ETB",
+      "count": 1,
+      "latestNote": "",
+      "lastDonation": "2026-11-22T17:43:29.717Z"
+    },
+    {
+      "rank": 2,
       "name": "Dibea",
       "isAnonymous": false,
       "totalAmount": 1000,
@@ -197,7 +173,7 @@
       "lastDonation": "2026-11-13T18:48:11.616Z"
     },
     {
-      "rank": 2,
+      "rank": 3,
       "name": "Juntaw",
       "isAnonymous": false,
       "totalAmount": 700,
@@ -208,7 +184,7 @@
       "lastDonation": "2026-11-14T19:29:38.867Z"
     },
     {
-      "rank": 3,
+      "rank": 4,
       "name": "Khalid GUNNERS",
       "isAnonymous": false,
       "totalAmount": 100,
@@ -219,7 +195,7 @@
       "lastDonation": "2026-11-11T17:29:18.998Z"
     },
     {
-      "rank": 4,
+      "rank": 5,
       "name": "Israel Alem",
       "isAnonymous": false,
       "totalAmount": 100,
@@ -230,7 +206,7 @@
       "lastDonation": "2026-11-10T19:04:04.717Z"
     },
     {
-      "rank": 5,
+      "rank": 6,
       "name": "RUBEM",
       "isAnonymous": false,
       "totalAmount": 100,
@@ -241,7 +217,7 @@
       "lastDonation": "2026-11-09T17:32:21.122Z"
     },
     {
-      "rank": 6,
+      "rank": 7,
       "name": "Bela",
       "isAnonymous": false,
       "totalAmount": 25,
@@ -252,7 +228,7 @@
       "lastDonation": "2026-11-10T17:09:19.247Z"
     },
     {
-      "rank": 7,
+      "rank": 8,
       "name": "ሉሲያን ብድት",
       "isAnonymous": false,
       "totalAmount": 5,
@@ -263,7 +239,7 @@
       "lastDonation": "2026-11-19T16:13:35.023Z"
     },
     {
-      "rank": 8,
+      "rank": 9,
       "name": "Lucia baby",
       "isAnonymous": false,
       "totalAmount": 5,
@@ -274,7 +250,7 @@
       "lastDonation": "2026-11-19T16:09:45.258Z"
     },
     {
-      "rank": 9,
+      "rank": 10,
       "name": "Xhunter ye nate",
       "isAnonymous": false,
       "totalAmount": 5,
@@ -285,43 +261,20 @@
       "lastDonation": "2026-11-09T16:43:38.162Z"
     }
   ],
-  "etb": [
-    {
-      "rank": 1,
-      "name": "ሉሲያን ብድት",
-      "isAnonymous": false,
-      "totalAmount": 5,
-      "formattedAmount": "5",
-      "currency": "ETB",
-      "count": 1,
-      "latestNote": "",
-      "lastDonation": "2026-11-19T16:13:35.023Z"
-    },
-    {
-      "rank": 2,
-      "name": "Lucia baby",
-      "isAnonymous": false,
-      "totalAmount": 5,
-      "formattedAmount": "5",
-      "currency": "ETB",
-      "count": 1,
-      "latestNote": "",
-      "lastDonation": "2026-11-19T16:09:45.258Z"
-    }
-  ],
+  "etb": [],
   "paypal": [],
   "stats": {
     "dailyTotalEtb": 0,
-    "weeklyTotalEtb": 10,
-    "alltimeTotalEtb": 2040,
-    "totalEtb": 2040,
+    "weeklyTotalEtb": 0,
+    "alltimeTotalEtb": 7040,
+    "totalEtb": 7040,
     "totalUsd": 0,
     "dailyDonorCount": 0,
-    "weeklyDonorCount": 2,
-    "alltimeDonorCount": 9,
-    "donorCountEtb": 9,
+    "weeklyDonorCount": 0,
+    "alltimeDonorCount": 10,
+    "donorCountEtb": 10,
     "donorCountUsd": 0,
-    "genuineTxCount": 15
+    "genuineTxCount": 16
   },
-  "timestamp": "2026-11-22T14:32:28.460Z"
+  "timestamp": "2026-11-23T18:10:15.085Z"
 }

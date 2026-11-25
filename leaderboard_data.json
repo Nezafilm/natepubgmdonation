@@ -14,9 +14,9 @@
       "totalEtb": 0,
       "donorCount": 0,
       "txCount": 0,
-      "periodStartMs": 1795467600000,
-      "nextResetMs": 1795554000000,
-      "dateKey": "2026-11-24"
+      "periodStartMs": 1795554000000,
+      "nextResetMs": 1795640400000,
+      "dateKey": "2026-11-25"
     },
     "weekly": {
       "items": [
@@ -367,5 +367,5 @@
     "donorCountUsd": 0,
     "genuineTxCount": 18
   },
-  "timestamp": "2026-11-24T18:22:47.532Z"
+  "timestamp": "2026-11-25T15:51:27.970Z"
 }

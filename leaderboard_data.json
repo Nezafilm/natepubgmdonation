@@ -14,14 +14,25 @@
       "totalEtb": 0,
       "donorCount": 0,
       "txCount": 0,
-      "periodStartMs": 1795554000000,
-      "nextResetMs": 1795640400000,
-      "dateKey": "2026-11-25"
+      "periodStartMs": 1795640400000,
+      "nextResetMs": 1795726800000,
+      "dateKey": "2026-11-26"
     },
     "weekly": {
       "items": [
         {
           "rank": 1,
+          "name": "Dibea",
+          "isAnonymous": false,
+          "totalAmount": 500,
+          "formattedAmount": "500",
+          "currency": "ETB",
+          "count": 1,
+          "latestNote": "Nate melatawu",
+          "lastDonation": "2026-11-25T18:30:27.999Z"
+        },
+        {
+          "rank": 2,
           "name": "Silaw",
           "isAnonymous": false,
           "totalAmount": 250,
@@ -32,7 +43,7 @@
           "lastDonation": "2026-11-23T18:21:14.146Z"
         },
         {
-          "rank": 2,
+          "rank": 3,
           "name": "Juntaw",
           "isAnonymous": false,
           "totalAmount": 100,
@@ -41,11 +52,22 @@
           "count": 1,
           "latestNote": "Begeta sim mn meselish",
           "lastDonation": "2026-11-23T18:55:09.098Z"
+        },
+        {
+          "rank": 4,
+          "name": "Kaleab Abusha",
+          "isAnonymous": false,
+          "totalAmount": 2,
+          "formattedAmount": "2",
+          "currency": "ETB",
+          "count": 1,
+          "latestNote": "",
+          "lastDonation": "2026-11-25T18:32:01.212Z"
         }
       ],
-      "totalEtb": 350,
-      "donorCount": 2,
-      "txCount": 2,
+      "totalEtb": 852,
+      "donorCount": 4,
+      "txCount": 4,
       "periodStartMs": 1795381200000,
       "autoPeriodStartMs": 1795381200000,
       "nextResetMs": 1795986000000,
@@ -69,12 +91,12 @@
           "rank": 2,
           "name": "Dibea",
           "isAnonymous": false,
-          "totalAmount": 1000,
-          "formattedAmount": "1,000",
+          "totalAmount": 1500,
+          "formattedAmount": "1,500",
           "currency": "ETB",
-          "count": 1,
-          "latestNote": "",
-          "lastDonation": "2026-11-13T18:48:11.616Z"
+          "count": 2,
+          "latestNote": "Nate melatawu",
+          "lastDonation": "2026-11-25T18:30:27.999Z"
         },
         {
           "rank": 3,
@@ -174,17 +196,39 @@
           "count": 1,
           "latestNote": "",
           "lastDonation": "2026-11-09T16:43:38.162Z"
+        },
+        {
+          "rank": 12,
+          "name": "Kaleab Abusha",
+          "isAnonymous": false,
+          "totalAmount": 2,
+          "formattedAmount": "2",
+          "currency": "ETB",
+          "count": 1,
+          "latestNote": "",
+          "lastDonation": "2026-11-25T18:32:01.212Z"
         }
       ],
-      "totalEtb": 7390,
-      "donorCount": 11,
-      "txCount": 18
+      "totalEtb": 7892,
+      "donorCount": 12,
+      "txCount": 20
     }
   },
   "daily": [],
   "weekly": [
     {
       "rank": 1,
+      "name": "Dibea",
+      "isAnonymous": false,
+      "totalAmount": 500,
+      "formattedAmount": "500",
+      "currency": "ETB",
+      "count": 1,
+      "latestNote": "Nate melatawu",
+      "lastDonation": "2026-11-25T18:30:27.999Z"
+    },
+    {
+      "rank": 2,
       "name": "Silaw",
       "isAnonymous": false,
       "totalAmount": 250,
@@ -195,7 +239,7 @@
       "lastDonation": "2026-11-23T18:21:14.146Z"
     },
     {
-      "rank": 2,
+      "rank": 3,
       "name": "Juntaw",
       "isAnonymous": false,
       "totalAmount": 100,
@@ -204,6 +248,17 @@
       "count": 1,
       "latestNote": "Begeta sim mn meselish",
       "lastDonation": "2026-11-23T18:55:09.098Z"
+    },
+    {
+      "rank": 4,
+      "name": "Kaleab Abusha",
+      "isAnonymous": false,
+      "totalAmount": 2,
+      "formattedAmount": "2",
+      "currency": "ETB",
+      "count": 1,
+      "latestNote": "",
+      "lastDonation": "2026-11-25T18:32:01.212Z"
     }
   ],
   "alltime": [
@@ -222,12 +277,12 @@
       "rank": 2,
       "name": "Dibea",
       "isAnonymous": false,
-      "totalAmount": 1000,
-      "formattedAmount": "1,000",
+      "totalAmount": 1500,
+      "formattedAmount": "1,500",
       "currency": "ETB",
-      "count": 1,
-      "latestNote": "",
-      "lastDonation": "2026-11-13T18:48:11.616Z"
+      "count": 2,
+      "latestNote": "Nate melatawu",
+      "lastDonation": "2026-11-25T18:30:27.999Z"
     },
     {
       "rank": 3,
@@ -327,11 +382,33 @@
       "count": 1,
       "latestNote": "",
       "lastDonation": "2026-11-09T16:43:38.162Z"
+    },
+    {
+      "rank": 12,
+      "name": "Kaleab Abusha",
+      "isAnonymous": false,
+      "totalAmount": 2,
+      "formattedAmount": "2",
+      "currency": "ETB",
+      "count": 1,
+      "latestNote": "",
+      "lastDonation": "2026-11-25T18:32:01.212Z"
     }
   ],
   "etb": [
     {
       "rank": 1,
+      "name": "Dibea",
+      "isAnonymous": false,
+      "totalAmount": 500,
+      "formattedAmount": "500",
+      "currency": "ETB",
+      "count": 1,
+      "latestNote": "Nate melatawu",
+      "lastDonation": "2026-11-25T18:30:27.999Z"
+    },
+    {
+      "rank": 2,
       "name": "Silaw",
       "isAnonymous": false,
       "totalAmount": 250,
@@ -342,7 +419,7 @@
       "lastDonation": "2026-11-23T18:21:14.146Z"
     },
     {
-      "rank": 2,
+      "rank": 3,
       "name": "Juntaw",
       "isAnonymous": false,
       "totalAmount": 100,
@@ -351,21 +428,32 @@
       "count": 1,
       "latestNote": "Begeta sim mn meselish",
       "lastDonation": "2026-11-23T18:55:09.098Z"
+    },
+    {
+      "rank": 4,
+      "name": "Kaleab Abusha",
+      "isAnonymous": false,
+      "totalAmount": 2,
+      "formattedAmount": "2",
+      "currency": "ETB",
+      "count": 1,
+      "latestNote": "",
+      "lastDonation": "2026-11-25T18:32:01.212Z"
     }
   ],
   "paypal": [],
   "stats": {
     "dailyTotalEtb": 0,
-    "weeklyTotalEtb": 350,
-    "alltimeTotalEtb": 7390,
-    "totalEtb": 7390,
+    "weeklyTotalEtb": 852,
+    "alltimeTotalEtb": 7892,
+    "totalEtb": 7892,
     "totalUsd": 0,
     "dailyDonorCount": 0,
-    "weeklyDonorCount": 2,
-    "alltimeDonorCount": 11,
-    "donorCountEtb": 11,
+    "weeklyDonorCount": 4,
+    "alltimeDonorCount": 12,
+    "donorCountEtb": 12,
     "donorCountUsd": 0,
-    "genuineTxCount": 18
+    "genuineTxCount": 20
   },
-  "timestamp": "2026-11-25T15:51:27.970Z"
+  "timestamp": "2026-11-26T16:37:51.011Z"
 }
